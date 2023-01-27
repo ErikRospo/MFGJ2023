@@ -20,4 +20,15 @@ module.exports = {
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
   },
+  devServer: {
+    static: {
+      directory: path.join(__dirname, 'dist'),
+    },
+    compress: true,
+    port: 9000,
+  },
+  watch: true,
+  watchOptions: {
+    ignored: /node_modules/,
+  },
 };
