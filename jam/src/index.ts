@@ -1,6 +1,7 @@
 import * as _ from 'lodash';
 import * as PIXI from 'pixi.js';
 import { Place } from './patterns';
+import { Player } from './player';
 import { bool2d } from './types';
 const canvas = document.createElement('canvas');
 const ctx = canvas.getContext("2d");
@@ -25,6 +26,8 @@ function reset() {
     }
 }
 reset()
+let player = new Player(20 * grid_size, 0, grid_size, grid_size);
+
 /**
  * Draws a square at a location, (`x`,`y`), that has a side length of `s`   
  * If state is false, the square is black, otherwise, it is white;
@@ -43,8 +46,8 @@ Place.glider(grid, 10, 5)
 Place.glider(grid, 5, 10)
 Place.glider(grid, 10, 10)
 Place.block(grid, 20, 15)
-Place.blinker_h(grid,30,15)
-Place.blinker_v(grid,35,15)
+Place.blinker_h(grid, 30, 15)
+Place.blinker_v(grid, 35, 15)
 function updateGol(oldgrid: bool2d): bool2d {
     let newgrid: bool2d = [];
     let gh = oldgrid[0].length
@@ -52,7 +55,7 @@ function updateGol(oldgrid: bool2d): bool2d {
 
     for (let x = 0; x < gw; x++) {
         let temp_array: boolean[] = [];
-    
+
         for (let y = 0; y < gh; y++) {
             let total: number = 0;
 
@@ -87,9 +90,11 @@ function render(rendergrid: bool2d = grid) {
 
         }
     }
+    player.render(ctx, grid_size);
 }
 function step() {
     grid = updateGol(grid);
+    player.update(1);
     console.log(grid);
     render(grid)
 }

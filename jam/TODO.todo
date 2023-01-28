@@ -1,0 +1,12 @@
+[ ] player interactivity
+[ ] player collisions
+[ ] player collision response
+[ ] levels
+[ ] save/load levels
+[ ] accept RLE
+[ ] have camera follow player
+[ ] simulate grid outside of camera view
+[ ] player texture?
+[ ] audio
+[ ] music
+[ ] sfx

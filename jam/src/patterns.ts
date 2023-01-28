@@ -6,6 +6,7 @@ export namespace Place {
      * @param {bool2d} grid The grid on which to place the glider
      * @param {number} x The X position of the top left of the glider's bounding box
      * @param {number} y The Y position of the top left of the glider's bounding box
+     * @returns {bool2d} A reference to grid, mutated.
      */
     export function glider(grid: bool2d, x: number, y: number): bool2d {
         grid[x][y] = false;
@@ -25,6 +26,7 @@ export namespace Place {
      * @param {bool2d} grid The grid on which to place the block
      * @param {number} x The X position of the top left of the block's bounding box
      * @param {number} y The Y position of the top left of the block's bounding box
+     * @returns {bool2d} A reference to grid, mutated.
      */
     export function block(grid: bool2d, x: number, y: number): bool2d {
         grid[x][y] = true;
@@ -39,6 +41,7 @@ export namespace Place {
      * @param {bool2d} grid The grid on which to place the blinker
      * @param {number} x The X position of the top left of the blinker's bounding box
      * @param {number} y The Y position of the top left of the blinker's bounding box
+     * @returns {bool2d} A reference to grid, mutated.
      */
     export function blinker_v(grid: bool2d, x: number, y: number): bool2d {
         grid[x][y] = true;
@@ -52,6 +55,7 @@ export namespace Place {
      * @param {bool2d} grid The grid on which to place the blinker
      * @param {number} x The X position of the top left of the blinker's bounding box
      * @param {number} y The Y position of the top left of the blinker's bounding box
+     * @returns {bool2d} A reference to grid, mutated.
      */
     export function blinker_h(grid: bool2d, x: number, y: number): bool2d {
         grid[x][y] = true;
