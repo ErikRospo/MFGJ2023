@@ -9,6 +9,6 @@
       "allowJs": true,
       "moduleResolution": "node",
       "noFallthroughCasesInSwitch": true,
-      "noImplicitReturns": true
+      "noImplicitReturns": true,
     }
 }

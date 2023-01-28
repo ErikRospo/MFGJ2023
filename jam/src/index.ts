@@ -1,8 +1,11 @@
+/// <reference path="../types.d.ts"/>
 import * as _ from 'lodash';
 import * as PIXI from 'pixi.js';
 import { Place } from './patterns';
 import { Player } from './player';
 import { bool2d } from './types';
+import level from "./levels/gospergun.rle";
+console.log(level);
 const canvas = document.createElement('canvas');
 const ctx = canvas.getContext("2d");
 document.body.appendChild(canvas);
@@ -41,13 +44,16 @@ function drawSquare(x: number, y: number, s: number, state: boolean = false): vo
     ctx.fillRect(x, y, s, s);
 
 }
-Place.glider(grid, 5, 5)
-Place.glider(grid, 10, 5)
-Place.glider(grid, 5, 10)
-Place.glider(grid, 10, 10)
+// Place.glider(grid, 5, 5)
+// Place.glider(grid, 10, 5)
+// Place.glider(grid, 5, 10)
+// Place.glider(grid, 10, 10)
 Place.block(grid, 20, 15)
-Place.blinker_h(grid, 30, 15)
-Place.blinker_v(grid, 35, 15)
+Place.block(grid, 23, 15)
+
+// Place.blinker_h(grid, 30, 15)
+// Place.blinker_v(grid, 35, 15)
+
 function updateGol(oldgrid: bool2d): bool2d {
     let newgrid: bool2d = [];
     let gh = oldgrid[0].length
@@ -94,17 +100,20 @@ function render(rendergrid: bool2d = grid) {
 function step() {
     grid = updateGol(grid);
     player.update(1);
-    player.collide(grid,grid_size)
+    player.collide(grid, grid_size)
     render(grid)
-    
+    // if (player.x < 0 || player.y < 0 || player.x > width || player.y > height) {
+
+    // }
+
 }
-let enabled = true
+let enabled = false
 setInterval(() => {
     if (enabled) step()
 }, 1000 / fps)
 addEventListener("keypress", (ev) => {
     switch (ev.key) {
-        case "s":
+        case "y":
             if (!enabled) {
                 step()
             }
@@ -113,10 +122,21 @@ addEventListener("keypress", (ev) => {
         case "t":
         case " ":
             enabled = !enabled
-            break
+            break;
         case "r":
             reset()
-            break
+            break;
+        case "w":
+            player.ay = -10;
+            break;
+        case "a":
+            player.ax = -2;
+            break;
+        case "d":
+
+            player.ax = 2;
+            break;
+
     }
 })
 step()

@@ -1,6 +1,6 @@
 import { Point } from 'pixi.js';
 import { PhysicsBody } from './classes/PhysicsBody';
-import { PlayerColor } from './constants';
+import { PlayerColor, SMOOTH } from './constants';
 import { bool2d } from './types';
 import { floorTo } from './utility';
 export class Player extends PhysicsBody {
@@ -13,7 +13,14 @@ export class Player extends PhysicsBody {
     render(ctx: CanvasRenderingContext2D, grid_size: number) {
         ctx.save();
         ctx.fillStyle = this.color;
-        ctx.fillRect(floorTo(this.x, grid_size), floorTo(this.y, grid_size), this.width, this.height);
+        if (SMOOTH){
+            
+            ctx.fillRect(this.x, this.y, this.width, this.height);
+        }else{
+            
+            ctx.fillRect(floorTo(this.x, grid_size), floorTo(this.y, grid_size), this.width, this.height);
+        }
+        
         ctx.restore();
     }
     update(dt: number): void {
@@ -22,12 +29,16 @@ export class Player extends PhysicsBody {
     }
     collide(grid: bool2d, grid_size: number) {
         let moved = false;
+        // let px = Math.floor(this.x / grid_size)
+        // let py = Math.floor(this.y / grid_size)
+        // this.x=px*grid_size;
+        // this.y=py*grid_size;
         while (true) {
             let px = Math.floor(this.x / grid_size)
             let py = Math.floor(this.y / grid_size)
             if (grid[px][py]) {
                 if (this.vx > this.vy) {
-                    this.x -= grid_size
+                    this.x -= grid_size;
                 } else {
                     this.y -= grid_size;
                 }

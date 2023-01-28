@@ -9,7 +9,11 @@ module.exports = {
         test: /\.tsx?$/,
         use: 'ts-loader',
         exclude: /node_modules/,
-      },
+      },{
+        test:/\.ru?le$/,
+        use:'./rle-loader.js'
+      }
+      
     ],
   },
   output: {
@@ -18,7 +22,7 @@ module.exports = {
   },
   mode:"development",
   resolve: {
-    extensions: ['.tsx', '.ts', '.js'],
+    extensions: ['.tsx', '.ts', '.js','.rle'],
   },
   devServer: {
     static: {
