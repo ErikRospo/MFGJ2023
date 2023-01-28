@@ -40,13 +40,13 @@ function glider(x: number, y: number): void {
   grid[x + 1][y + 2] = true
   grid[x + 2][y + 2] = true
 }
-glider(0, 0)
-glider(5,5)
-glider(10,5)
-glider(10,10)
-grid[21][20]=true
-grid[22][20]=true
-grid[23][20]=true
+glider(5, 5)
+glider(5, 10)
+glider(10, 5)
+glider(10, 10)
+grid[21][20] = true
+grid[22][20] = true
+grid[23][20] = true
 function updateGol(oldgrid: state2d): state2d {
   let newgrid: state2d = [];
   let gh = oldgrid[0].length
@@ -84,7 +84,6 @@ function render(rendergrid: state2d = grid) {
   for (let x = 0; x < width / grid_size; x++) {
 
     for (let y = 0; y < height / grid_size; y++) {
-      //TODO: figure out the odd indexing
       drawSquare(x * grid_size, y * grid_size, grid_size, rendergrid[x][y])
 
     }

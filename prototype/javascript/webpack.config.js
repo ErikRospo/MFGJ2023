@@ -26,8 +26,10 @@ module.exports = {
     },
     compress: true,
     port: 9000,
+        client: {
+      progress: true,
+    },
   },
-  watch: true,
   watchOptions: {
     ignored: /node_modules/,
   },
