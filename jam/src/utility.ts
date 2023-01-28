@@ -22,3 +22,11 @@ export function floorTo(v: number, n: number) {
 export function ceilTo(v: number, n: number) {
     return Math.ceil(v / n) * n;
 }
+/**
+ * returns the absolute value of `n`
+ * @param {number} n 
+ * @returns the absolute value
+ */
+export function abs(n: number): number {
+    return Math.abs(n)
+}

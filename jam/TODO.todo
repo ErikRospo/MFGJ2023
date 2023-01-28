@@ -1,6 +1,6 @@
 [ ] player interactivity
-[ ] player collisions
-[ ] player collision response
+[x] player collisions
+[x] player collision response
 [ ] levels
 [ ] save/load levels
 [ ] accept RLE

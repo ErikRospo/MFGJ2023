@@ -1,19 +1,37 @@
-import * as PIXI from 'pixi.js';
+import * as _ from 'lodash';
+
+import { Point } from 'pixi.js';
 import { GRAVITY } from '../constants';
+import { abs } from '../utility';
 export class PhysicsBody {
     /**Position*/
-    pos: PIXI.Point;
+    pos: Point;
     /**Velocity*/ 
-    vel: PIXI.Point;
+    vel: Point;
     /**Acceleration */
-    acc: PIXI.Point;
+    acc: Point;
+    width: number;
+    height: number;
+    
+    /**The maximum velocity. Note that it is used for both the minumum and maximum velocity.
+     * The velocity is clamped between -maxVel, and maxVel
+    */
+    private _maxVel:Point;
     /**
      * The PhysicsBody class.
+     * @param {number} x the starting x position
+     * @param {number} y the starting y position
+     * @param {number} width the width of the object
+     * @param {number} height the height of the object
+     * @param {Point} maxVel the maximum speed of an object. Optional, but defaults to both x and y being clamped to 100
      */
-    constructor(x: number, y: number) {
-        this.pos = new PIXI.Point(x, y);
-        this.vel = new PIXI.Point()
-        this.acc = new PIXI.Point();
+    constructor(x: number, y: number,width: number,height: number,maxVel?:Point) {
+        this.pos = new Point(x, y);
+        this.vel = new Point();
+        this.acc = new Point();
+        this.width = width
+        this.height = height
+        this._maxVel=new Point(abs(maxVel.x),abs(maxVel.y))||new Point(100,100);
     }
     // #region get/set pos, vel, acc
     /**
@@ -71,16 +89,31 @@ export class PhysicsBody {
         this.acc.y = v;
     }
     // #endregion
-
+    /** the maximum velocity. Note that it can not be set to a negative number.
+     * if it is, the absolute value will be used instead.
+    */
+    public get maxVel() : Point {
+        return this._maxVel;
+    }
+    
+    public set maxVel(v : Point) {
+        if (v.x<0 || v.y<0){
+            console.warn("max vel can not be set to a negative number")
+        }
+        this._maxVel = new Point(abs(v.x),abs(v.y));
+    }
+    
     /**
-     * @param {number} dt Delta Time
      * Updates the position, velocity, and the acceleration
+     * @param {number} dt Delta Time
      */
-    update(dt:number){
+    update(dt:number): void{
         this.x+=this.vx*dt;
         this.y+=this.vy*dt;
         this.vx+=this.ax*dt;
         this.vy+=this.ay*dt;
+        this.vx=_.clamp(this.vx,-this.maxVel.x,this.maxVel.x)
+        this.vy=_.clamp(this.vy,-this.maxVel.y,this.maxVel.y)
         this.ax=0;
         this.ay=GRAVITY;
     }

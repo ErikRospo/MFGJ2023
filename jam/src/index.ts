@@ -82,7 +82,6 @@ function updateGol(oldgrid: bool2d): bool2d {
     return newgrid;
 }
 function render(rendergrid: bool2d = grid) {
-    console.log(rendergrid.length)
     for (let x = 0; x < width / grid_size; x++) {
 
         for (let y = 0; y < height / grid_size; y++) {
@@ -95,8 +94,9 @@ function render(rendergrid: bool2d = grid) {
 function step() {
     grid = updateGol(grid);
     player.update(1);
-    console.log(grid);
+    player.collide(grid,grid_size)
     render(grid)
+    
 }
 let enabled = true
 setInterval(() => {
