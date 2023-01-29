@@ -6,6 +6,7 @@ import { Player } from './player';
 import { bool2d } from './types';
 import level from "./levels/gospergun.rle";
 import { padbool2d } from './utility';
+import { PhysicsBody } from './classes/PhysicsBody';
 console.log(level);
 const canvas = document.createElement('canvas');
 const ctx = canvas.getContext("2d");
@@ -53,9 +54,9 @@ function drawSquare(x: number, y: number, s: number, state: boolean = false): vo
 // Place.glider(grid, 10, 10)
 Place.block(grid, 20, 30)
 Place.block(grid, 23, 30)
-
-// Place.blinker_h(grid, 30, 15)
-// Place.blinker_v(grid, 35, 15)
+Place.block(grid, 26, 30)
+Place.blinker_h(grid, 30, 15)
+Place.blinker_v(grid, 35, 15)
 
 function updateGol(oldgrid: bool2d): bool2d {
     let newgrid: bool2d = [];
@@ -122,13 +123,20 @@ function render(rendergrid: bool2d = grid) {
     }
     player.render(ctx, grid_size);
 }
+let collisions: PhysicsBody[] = [];
 function step() {
     if (frame % 5 == 0) {
         grid = updateGol(grid);
     }
     frame += 1;
     player.update(1);
-    player.collide(grid, grid_size)
+
+    collisions.concat(player.collide(grid, grid_size))
+
+    collisions.forEach((element: PhysicsBody) => {
+        element.render(ctx, grid_size);
+
+    });
     render(grid)
     if (player.x < 0 || player.y < 0 || player.x > width || player.y > height) {
         player.x = 20 * grid_size
@@ -163,7 +171,9 @@ addEventListener("keypress", (ev) => {
             reset()
             break;
         case "w":
-            player.ay = -10;
+            if (player.grounded) {
+                player.vy = -20;
+            }
             break;
         case "a":
             player.ax = -2;

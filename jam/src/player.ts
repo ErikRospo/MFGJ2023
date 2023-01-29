@@ -1,8 +1,8 @@
 import { Point } from 'pixi.js';
 import { PhysicsBody } from './classes/PhysicsBody';
-import { PlayerColor } from './constants';
+import { PlayerColor, SCALE_FACTOR } from './constants';
 import { bool2d } from './types';
-import { abs, floorTo } from './utility';
+import { abs, ceilTo, floorTo, roundTo } from './utility';
 const floor = Math.floor
 export class Player extends PhysicsBody {
 
@@ -12,28 +12,23 @@ export class Player extends PhysicsBody {
         super(x, y, width, height, new Point(30, 30));
 
     }
-    render(ctx: CanvasRenderingContext2D, grid_size: number) {
-        ctx.save();
-        ctx.fillStyle = this.color;
-
-        ctx.fillRect(this.x, this.y, this.width, this.height);
-        ctx.restore();
+    render(ctx: CanvasRenderingContext2D, grid_size: number): void {
+        super.render(ctx,grid_size);
     }
     update(dt: number): void {
 
         this.gravity = !this.grounded;
         super.update(dt);
     }
-    collide(grid: bool2d, grid_size: number) {
-        let x = this.x / grid_size;
-        let y = this.y / grid_size;
+    collide(grid: bool2d, grid_size: number): PhysicsBody[] {
+
         let fx = floorTo(this.x, grid_size);
         let fy = floorTo(this.y, grid_size);
         let possibleCollisions: PhysicsBody[] = [];
         for (let ix = -2; ix < 2; ix++) {
             for (let iy = -2; iy < 2; iy++) {
-                if (grid[floor(x) + ix][floor(y) + iy]) {
-                    possibleCollisions.push(new PhysicsBody(fx + ix, fy + iy, grid_size, grid_size))
+                if (grid[floor(this.x / grid_size) + ix][floor(this.y / grid_size) + iy]) {
+                    possibleCollisions.push(new PhysicsBody(floorTo(fx + grid_size * (ix / 2), grid_size) + SCALE_FACTOR / 2, floorTo(fy + grid_size * (iy / 2), grid_size) + SCALE_FACTOR / 2, grid_size - SCALE_FACTOR, grid_size - SCALE_FACTOR))
                 }
             }
         }
@@ -76,29 +71,66 @@ export class Player extends PhysicsBody {
             let vx = a.vx - (b.vx || 0);
             let vy = a.vy - (b.vy || 0);
             let ps = vx * nx + vy * ny;
+            console.log(ps)
             if (ps >= 0) {
-                a.x -= sx;
-                a.y -= sy;
-                a.vx=0
-                a.vy=0
+                let px = nx * ps;
+                let py = ny * ps;
+                let tx = vx - px;
+                let ty = vy - py;
+                a.x -= nx
+                a.y -= ny
+                let r = 1 + Math.max(a.coef_restitution, b.coef_restitution);
+                let f = Math.min(a.coef_friction, b.coef_friction);
+                a.vx -= px * r + tx * f
+                a.vy -= py * r + ty * f
             }
         }
         function checkCollision(a: PhysicsBody, b: PhysicsBody) {
             let { collision, x, y } = testwithrect(a, b);
             if (collision) {
                 solveCollision(a, b, x, y)
-                console.log(a,b)
             }
             return collision
         }
-        if (possibleCollisions.length > 0) {
-            console.log(possibleCollisions)
+        if ((grid[floor(this.x / grid_size) + 0][floor(this.y / grid_size) + 1])) {
+            this.grounded = true
+        } else {
+            this.grounded = false;
         }
+        let collisions=[]
         for (let i = 0; i < possibleCollisions.length; i++) {
             const element = possibleCollisions[i];
-            let wc=checkCollision(this, element)
+            element.coef_friction = 1
+            element.coef_restitution = 0
+            this.coef_friction = 1
+            this.coef_restitution = 0
+            
+            let wc = checkCollision(this, element)
+           if (wc){
+            collisions.push(element)
+            element.color="rgb(255,0,255);"
+           }
+            /**
+             * ix=0
+             * iy=-1
+             * grid[floor(this.x/grid_size)][floor(this.y/grid_size)-1]
+             * 
+             */
+            /**
+             *         for (let ix = -2; ix < 2; ix++) {
+            for (let iy = -2; iy < 2; iy++) {
+                if (grid[floor(this.x / grid_size) + ix][floor(this.y / grid_size) + iy]) {
+                    possibleCollisions.push(new PhysicsBody(floorTo(fx + grid_size * (ix / 2), grid_size), floorTo(fy + grid_size * (iy / 2), grid_size), grid_size, grid_size))
+                }
+            }
+        }
+             */
             //TODO: if the colliding element is the floor, set the `grounded` flag to true.
         }
-
+        if (this.grounded) {
+            this.x = roundTo(this.x, grid_size)
+            this.y = roundTo(this.y, grid_size)
+        }
+        return collisions
     }
 }

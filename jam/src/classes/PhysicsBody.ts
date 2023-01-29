@@ -15,7 +15,12 @@ export class PhysicsBody {
     /**the height of the object */
     height: number;
     /**whether the object has gravity */
-    gravity:boolean=true
+    gravity:boolean=true;
+    /**how "bouncy" the object is */
+    coef_restitution:number=0.5;
+    /**how "grippy" the object is */
+    coef_friction:number=0.5;
+    color:boolean|string=false;
     /**The maximum velocity. Note that it is used for both the minumum and maximum velocity.
      * The velocity is clamped between -maxVel, and maxVel
     */
@@ -105,7 +110,14 @@ export class PhysicsBody {
         }
         this._maxVel = new Point(abs(v.x),abs(v.y));
     }
-    
+    render(ctx: CanvasRenderingContext2D, _grid_size: number): void {
+        ctx.save();
+        ctx.fillStyle = (typeof this.color=="boolean"?(this.color?"black":"white"):this.color);
+
+
+        ctx.fillRect(this.x, this.y, this.width, this.height);
+        ctx.restore();
+    }
     /**
      * Updates the position, velocity, and the acceleration
      * @param {number} dt Delta Time

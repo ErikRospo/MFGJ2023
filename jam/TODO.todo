@@ -1,9 +1,12 @@
 [x] player interactivity
 [x] player collisions
 [x] player collision response
+[x] accept RLE
+[ ] pause menu
+[ ] main menu
 [ ] levels
+[ ] level select
 [ ] save/load levels
-[ ] accept RLE
 [ ] have camera follow player
 [ ] simulate grid outside of camera view
 [ ] player texture?
