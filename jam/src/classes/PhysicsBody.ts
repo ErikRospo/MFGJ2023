@@ -34,7 +34,7 @@ export class PhysicsBody {
         this.acc = new Point();
         this.width = width
         this.height = height
-        this._maxVel=new Point(abs(maxVel.x),abs(maxVel.y))||new Point(100,100);
+        this._maxVel=new Point(abs(maxVel?.x||100),abs(maxVel?.y||100));
     }
     // #region get/set pos, vel, acc
     /**
