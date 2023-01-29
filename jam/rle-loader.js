@@ -103,7 +103,7 @@ module.exports= function (content) {
   
     return decoded;
   }
-  return `return ${JSON.stringify(decodeRLE(content.toString("utf-8")))}`;
+  return `export default JSON.parse("${JSON.stringify(decodeRLE(content.toString("utf-8")))}")`;
 };
 
 

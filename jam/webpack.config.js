@@ -11,7 +11,8 @@ module.exports = {
         exclude: /node_modules/,
       },{
         test:/\.ru?le$/,
-        use:'./rle-loader.js'
+        use:'./rle-loader.js',
+
       }
       
     ],
