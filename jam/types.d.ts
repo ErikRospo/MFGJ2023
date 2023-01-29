@@ -1,5 +1,6 @@
+
 declare module "*.rle" {
-    let level: string;
+    let level: boolean[][];
     export default level;
         
   }

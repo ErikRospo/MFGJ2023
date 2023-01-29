@@ -1,3 +1,5 @@
+import { bool2d } from "./types";
+
 /**
  * Rounds a number `v` to the nearest multiple of n
  * @param {number} v The value to round
@@ -23,10 +25,30 @@ export function ceilTo(v: number, n: number) {
     return Math.ceil(v / n) * n;
 }
 /**
- * returns the absolute value of `n`
+ * Returns the absolute value of `n`
  * @param {number} n 
  * @returns the absolute value
  */
 export function abs(n: number): number {
     return Math.abs(n)
+}
+/**
+ * Pads a bool2d array out to a specified width X height, using `val`. defaults to false.
+ * @param {bool2d} array The array to pad out.
+ * @param {number} width the width to pad the array out to.
+ * @param {number} height the height to pad the array out to
+ * @param {boolean} val the value to pad the array with. Defaults to false
+ * @returns {bool2d} The array, padded out to width X height
+ */
+export function padbool2d(array: bool2d, width: number, height: number, val: boolean = false): bool2d {
+    let newarray=[]
+    for (let index=0; index<height;index++){
+        let element=array[index]??Array(width).fill(val);
+        if (element.length!=width){
+            element=element.concat(Array(width-array[index].length).fill(val))
+        }
+        newarray[index]=element;
+        
+    }
+    return newarray
 }

@@ -5,6 +5,7 @@ import { Place } from './patterns';
 import { Player } from './player';
 import { bool2d } from './types';
 import level from "./levels/gospergun.rle";
+import { padbool2d } from './utility';
 console.log(level);
 const canvas = document.createElement('canvas');
 const ctx = canvas.getContext("2d");
@@ -17,7 +18,7 @@ let width = Math.floor(window.innerWidth / grid_size) * grid_size;
 let height = Math.floor(window.innerHeight / grid_size) * grid_size;
 canvas.width = width;
 canvas.height = height;
-function reset() {
+function reset(): void {
     grid = [];
     for (let x = 0; x < width / grid_size; x++) {
         let temp_array: boolean[] = [];
@@ -111,6 +112,7 @@ let enabled = false
 setInterval(() => {
     if (enabled) step()
 }, 1000 / fps)
+
 addEventListener("keypress", (ev) => {
     switch (ev.key) {
         case "y":
@@ -136,7 +138,15 @@ addEventListener("keypress", (ev) => {
 
             player.ax = 2;
             break;
-
+        case "l":
+            let pb=padbool2d(level,grid[0].length,grid.length);    
+            grid=pb;
+            
+            break;
+        case "r":
+            location.reload();
+            break;    
+        
     }
 })
 step()

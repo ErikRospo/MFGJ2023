@@ -19,7 +19,6 @@ export class Player extends PhysicsBody {
     }
     update(dt: number): void {
         super.update(dt);
-        console.log(this.pos, this.vel, this.acc);
     }
     collide(grid: bool2d, grid_size: number) {
         let movedx = false;
