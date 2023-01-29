@@ -10,9 +10,12 @@ export class PhysicsBody {
     vel: Point;
     /**Acceleration */
     acc: Point;
+    /**the width of the object */
     width: number;
+    /**the height of the object */
     height: number;
-    
+    /**whether the object has gravity */
+    gravity:boolean=true
     /**The maximum velocity. Note that it is used for both the minumum and maximum velocity.
      * The velocity is clamped between -maxVel, and maxVel
     */
@@ -115,6 +118,10 @@ export class PhysicsBody {
         this.vx=_.clamp(this.vx,-this.maxVel.x,this.maxVel.x)
         this.vy=_.clamp(this.vy,-this.maxVel.y,this.maxVel.y)
         this.ax=0;
-        this.ay=GRAVITY;
+        if (this.gravity){
+            this.ay=GRAVITY;
+        }else{
+            this.ay=0;
+        }
     }
 }

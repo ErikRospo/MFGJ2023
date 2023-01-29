@@ -10,9 +10,10 @@ console.log(level);
 const canvas = document.createElement('canvas');
 const ctx = canvas.getContext("2d");
 document.body.appendChild(canvas);
+let frame = 0;
 let grid: bool2d = [];
 let grid_size = 20;
-let fps = 5;
+let fps = 60;
 
 let width = Math.floor(window.innerWidth / grid_size) * grid_size;
 let height = Math.floor(window.innerHeight / grid_size) * grid_size;
@@ -41,16 +42,17 @@ let player = new Player(20 * grid_size, 0, grid_size, grid_size);
  * @param {boolean} state whether to draw the square as black (false) or white (true)
  */
 function drawSquare(x: number, y: number, s: number, state: boolean = false): void {
+    ctx.save()
     ctx.fillStyle = state ? "white" : "black";
     ctx.fillRect(x, y, s, s);
-
+    ctx.restore()
 }
 // Place.glider(grid, 5, 5)
 // Place.glider(grid, 10, 5)
 // Place.glider(grid, 5, 10)
 // Place.glider(grid, 10, 10)
-Place.block(grid, 20, 15)
-Place.block(grid, 23, 15)
+Place.block(grid, 20, 30)
+Place.block(grid, 23, 30)
 
 // Place.blinker_h(grid, 30, 15)
 // Place.blinker_v(grid, 35, 15)
@@ -89,26 +91,58 @@ function updateGol(oldgrid: bool2d): bool2d {
     return newgrid;
 }
 function render(rendergrid: bool2d = grid) {
+    let px = Math.floor(player.x / grid_size)
+    let py = Math.floor(player.y / grid_size)
     for (let x = 0; x < width / grid_size; x++) {
 
         for (let y = 0; y < height / grid_size; y++) {
-            drawSquare(x * grid_size, y * grid_size, grid_size, rendergrid[x][y])
 
+            drawSquare(x * grid_size, y * grid_size, grid_size, rendergrid[x][y])
+            if (x == px + 1 && y == py) {
+                ctx.fillStyle = "red"
+                ctx.fillRect(x * grid_size, y * grid_size, grid_size, grid_size);
+
+            }
+            if (x == px && y == py + 1) {
+                ctx.fillStyle = "green"
+                ctx.fillRect(x * grid_size, y * grid_size, grid_size, grid_size);
+
+            }
+            if (x == px && y == py - 1) {
+                ctx.fillStyle = "blue"
+                ctx.fillRect(x * grid_size, y * grid_size, grid_size, grid_size);
+
+            }
+            if (x == px - 1 && y == py) {
+                ctx.fillStyle = "yellow"
+                ctx.fillRect(x * grid_size, y * grid_size, grid_size, grid_size);
+
+            }
         }
     }
     player.render(ctx, grid_size);
 }
 function step() {
-    grid = updateGol(grid);
+    if (frame % 5 == 0) {
+        grid = updateGol(grid);
+    }
+    frame += 1;
     player.update(1);
     player.collide(grid, grid_size)
     render(grid)
-    // if (player.x < 0 || player.y < 0 || player.x > width || player.y > height) {
+    if (player.x < 0 || player.y < 0 || player.x > width || player.y > height) {
+        player.x = 20 * grid_size
+        player.y = 0
+        player.ax = 0
+        player.ay = 0
+        player.vx = 0
+        player.vy = 0;
+        // let player = new Player(20 * grid_size, 0, grid_size, grid_size);
 
-    // }
+    }
 
 }
-let enabled = false
+let enabled = !false
 setInterval(() => {
     if (enabled) step()
 }, 1000 / fps)
@@ -139,14 +173,14 @@ addEventListener("keypress", (ev) => {
             player.ax = 2;
             break;
         case "l":
-            let pb=padbool2d(level,grid[0].length,grid.length);    
-            grid=pb;
-            
+            let pb = padbool2d(level, grid[0].length, grid.length);
+            grid = pb;
+
             break;
-        case "r":
+        case "k":
             location.reload();
-            break;    
-        
+            break;
+
     }
 })
 step()
