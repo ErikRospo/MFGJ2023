@@ -1,6 +1,6 @@
 import { Point } from 'pixi.js';
 import { PhysicsBody } from './classes/PhysicsBody';
-import { PlayerColor, SMOOTH } from './constants';
+import { PlayerColor } from './constants';
 import { bool2d } from './types';
 import { floorTo } from './utility';
 export class Player extends PhysicsBody {
@@ -13,14 +13,8 @@ export class Player extends PhysicsBody {
     render(ctx: CanvasRenderingContext2D, grid_size: number) {
         ctx.save();
         ctx.fillStyle = this.color;
-        if (SMOOTH){
-            
-            ctx.fillRect(this.x, this.y, this.width, this.height);
-        }else{
-            
-            ctx.fillRect(floorTo(this.x, grid_size), floorTo(this.y, grid_size), this.width, this.height);
-        }
-        
+
+        ctx.fillRect(floorTo(this.x, grid_size), floorTo(this.y, grid_size), this.width, this.height);
         ctx.restore();
     }
     update(dt: number): void {
@@ -28,7 +22,8 @@ export class Player extends PhysicsBody {
         console.log(this.pos, this.vel, this.acc);
     }
     collide(grid: bool2d, grid_size: number) {
-        let moved = false;
+        let movedx = false;
+        let movedy = false;
         // let px = Math.floor(this.x / grid_size)
         // let py = Math.floor(this.y / grid_size)
         // this.x=px*grid_size;
@@ -39,10 +34,11 @@ export class Player extends PhysicsBody {
             if (grid[px][py]) {
                 if (this.vx > this.vy) {
                     this.x -= grid_size;
+                    movedy = true;
                 } else {
                     this.y -= grid_size;
+                    movedx = true;
                 }
-                moved = true;
 
 
             } else {
@@ -50,9 +46,11 @@ export class Player extends PhysicsBody {
             }
 
         }
-        if (moved) {
-            this.vy = 0;
+        if (movedx) {
             this.vx = 0;
+        }
+        if (movedy) {
+            this.vy = 0;
         }
     }
 }

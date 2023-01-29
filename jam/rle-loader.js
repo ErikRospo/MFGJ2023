@@ -1,5 +1,12 @@
+/**@param {Buffer} content */
+module.exports= function (content) {
 //from https://github.com/timjacksonm/rle-decoder/blob/main/
-function decodeRLE(str) {
+  /**
+   * Converts a RLE string into a 2d bool array
+   * @param {string} str The string to convert
+   * @returns {boolean[][]} the state of the cells.
+   */
+  function decodeRLE(str) {
     function extractKeyValuePairs(string) {
         //format : { x: num, y: num }
         let sizeObject = string.replace(/\s/g, '').split(',');
@@ -96,10 +103,8 @@ function decodeRLE(str) {
   
     return decoded;
   }
-  
-/**@param {Buffer} content */
-export default function (content) {
-    
-    return (decodeRLE(content.toString("utf-8")).toString());
-  };
+  return `return ${JSON.stringify(decodeRLE(content.toString("utf-8")))}`;
+};
+
+
   
