@@ -13,7 +13,7 @@ export class Player extends PhysicsBody {
 
     }
     render(ctx: CanvasRenderingContext2D, grid_size: number): void {
-        super.render(ctx,grid_size);
+        super.render(ctx, grid_size);
     }
     update(dt: number): void {
 
@@ -97,19 +97,19 @@ export class Player extends PhysicsBody {
         } else {
             this.grounded = false;
         }
-        let collisions=[]
+        let collisions = []
         for (let i = 0; i < possibleCollisions.length; i++) {
             const element = possibleCollisions[i];
             element.coef_friction = 1
             element.coef_restitution = 0
             this.coef_friction = 1
             this.coef_restitution = 0
-            
+
             let wc = checkCollision(this, element)
-           if (wc){
-            collisions.push(element)
-            element.color="rgb(255,0,255);"
-           }
+            if (wc) {
+                collisions.push(element)
+                element.color = "rgb(255,0,255);"
+            }
             /**
              * ix=0
              * iy=-1

@@ -1,4 +1,8 @@
 import { bool2d } from './types';
+/**
+ * A bundle of functions for putting common objects on a grid.
+ * Yell at me for using a namespace in typescript. Do it.
+ */
 export namespace Place {
     /**
      * Places a glider at a specified (x,y) location on the grid;
