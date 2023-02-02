@@ -136,4 +136,27 @@ export class PhysicsBody {
             this.ay=0;
         }
     }
+    drawDebugArrows(ctx:CanvasRenderingContext2D,dt:number){
+        ctx.strokeStyle="red";
+        ctx.lineWidth=3
+        ctx.beginPath()
+        ctx.moveTo(this.x,this.y);
+        ctx.lineTo(this.x+this.vx*dt,this.x+this.vy*dt)
+        ctx.stroke()
+        
+        ctx.strokeStyle="blue";
+        ctx.beginPath()
+        ctx.moveTo(this.x+this.vx*dt,this.y+this.vy*dt);
+        ctx.lineTo(this.x+this.vx*dt+this.ax*dt,this.x+this.vy*dt+this.ax*dt)
+        ctx.stroke()
+        
+        ctx.strokeStyle="green";
+        ctx.beginPath()
+        ctx.moveTo(this.x+this.vx*dt,this.y+this.vy*dt);
+        ctx.lineTo(this.x+this.ax*dt,this.x+this.ax*dt)
+        ctx.stroke()
+        
+        ctx.moveTo(this.x,this.y);
+        
+    }
 }

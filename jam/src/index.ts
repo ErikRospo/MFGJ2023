@@ -99,29 +99,30 @@ function render(rendergrid: bool2d = grid) {
         for (let y = 0; y < height / grid_size; y++) {
 
             drawSquare(x * grid_size, y * grid_size, grid_size, rendergrid[x][y])
-            if (x == px + 1 && y == py) {
-                ctx.fillStyle = "red"
-                ctx.fillRect(x * grid_size, y * grid_size, grid_size, grid_size);
+            // if (x == px + 1 && y == py) {
+            //     ctx.fillStyle = "red"
+            //     ctx.fillRect(x * grid_size, y * grid_size, grid_size, grid_size);
 
-            }
-            if (x == px && y == py + 1) {
-                ctx.fillStyle = "green"
-                ctx.fillRect(x * grid_size, y * grid_size, grid_size, grid_size);
+            // }
+            // if (x == px && y == py + 1) {
+            //     ctx.fillStyle = "green"
+            //     ctx.fillRect(x * grid_size, y * grid_size, grid_size, grid_size);
 
-            }
-            if (x == px && y == py - 1) {
-                ctx.fillStyle = "blue"
-                ctx.fillRect(x * grid_size, y * grid_size, grid_size, grid_size);
+            // }
+            // if (x == px && y == py - 1) {
+            //     ctx.fillStyle = "blue"
+            //     ctx.fillRect(x * grid_size, y * grid_size, grid_size, grid_size);
 
-            }
-            if (x == px - 1 && y == py) {
-                ctx.fillStyle = "yellow"
-                ctx.fillRect(x * grid_size, y * grid_size, grid_size, grid_size);
+            // }
+            // if (x == px - 1 && y == py) {
+            //     ctx.fillStyle = "yellow"
+            //     ctx.fillRect(x * grid_size, y * grid_size, grid_size, grid_size);
 
-            }
+            // }
         }
     }
     player.render(ctx, grid_size);
+    
 }
 let collisions: PhysicsBody[] = [];
 function step() {
@@ -129,7 +130,8 @@ function step() {
         grid = updateGol(grid);
     }
     frame += 1;
-    player.update(1);
+    player.update(0.5);
+    render(grid)
 
     collisions.concat(player.collide(grid, grid_size))
 
@@ -137,7 +139,7 @@ function step() {
         element.render(ctx, grid_size);
 
     });
-    render(grid)
+    collisions=[];
     if (player.x < 0 || player.y < 0 || player.x > width || player.y > height) {
         player.x = 20 * grid_size
         player.y = 0
