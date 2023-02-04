@@ -56,7 +56,7 @@ Place.block(grid, 20, 30)
 Place.block(grid, 23, 30)
 Place.block(grid, 26, 30)
 Place.blinker_h(grid, 30, 15)
-Place.blinker_v(grid, 35, 15)
+// Place.blinker_v(grid, 18, 30)
 
 function updateGol(oldgrid: bool2d): bool2d {
     let newgrid: bool2d = [];
@@ -133,7 +133,7 @@ function step() {
     player.update(0.5);
     render(grid)
 
-    collisions.concat(player.collide(grid, grid_size))
+    collisions.concat(player.collide(grid, grid_size,ctx))
 
     collisions.forEach((element: PhysicsBody) => {
         element.render(ctx, grid_size);
@@ -178,11 +178,11 @@ addEventListener("keypress", (ev) => {
             }
             break;
         case "a":
-            player.ax = -2;
+            player.vx = -2;
             break;
         case "d":
 
-            player.ax = 2;
+            player.vx = 2;
             break;
         case "l":
             let pb = padbool2d(level, grid[0].length, grid.length);
