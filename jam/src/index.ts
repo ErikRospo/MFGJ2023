@@ -7,17 +7,17 @@ import { bool2d } from './types';
 import level from "./levels/gospergun.rle";
 import { padbool2d } from './utility';
 import { PhysicsBody } from './classes/PhysicsBody';
+import { grid_size, fps } from './constants';
 console.log(level);
 const canvas = document.createElement('canvas');
 const ctx = canvas.getContext("2d");
 document.body.appendChild(canvas);
 let frame = 0;
 let grid: bool2d = [];
-let grid_size = 20;
-let fps = 60;
 
-let width = Math.floor(window.innerWidth / grid_size) * grid_size;
-let height = Math.floor(window.innerHeight / grid_size) * grid_size;
+
+let width = _.floor(window.innerWidth / grid_size) * grid_size;
+let height = _.floor(window.innerHeight / grid_size) * grid_size;
 canvas.width = width;
 canvas.height = height;
 function reset(): void {
@@ -122,9 +122,8 @@ function render(rendergrid: bool2d = grid) {
         }
     }
     player.render(ctx, grid_size);
-    
+
 }
-let collisions: PhysicsBody[] = [];
 function step() {
     if (frame % 5 == 0) {
         grid = updateGol(grid);
@@ -133,13 +132,8 @@ function step() {
     player.update(0.5);
     render(grid)
 
-    collisions.concat(player.collide(grid, grid_size,ctx))
+    player.collide(grid, grid_size)
 
-    collisions.forEach((element: PhysicsBody) => {
-        element.render(ctx, grid_size);
-
-    });
-    collisions=[];
     if (player.x < 0 || player.y < 0 || player.x > width || player.y > height) {
         player.x = 20 * grid_size
         player.y = 0

@@ -1,3 +1,4 @@
+import { grid_size } from "./constants";
 import { bool2d } from "./types";
 
 /**
@@ -15,6 +16,13 @@ export function roundTo(v: number, n: number) {
  */
 export function floorTo(v: number, n: number) {
     return Math.floor(v / n) * n;
+}
+/**
+ * Rounds a number `v` down to the nearest multiple of n
+ * @param {number} v The value to round
+ */
+export function floorToGrid(v: number) {
+    return floorTo(v,grid_size);
 }
 /**
  * Rounds a number `v` up to the nearest multiple of n
