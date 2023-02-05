@@ -20,10 +20,17 @@ const menuDiv = document.getElementById("menuDiv")
 const optionsMenu = document.getElementById("optionsMenu");
 const optionsButton = document.getElementById("optionsButton");
 const optionsBackButton = document.getElementById("backButton");
+const optionsBackButton2 = document.getElementById("backButton2");
+const MusicVolumeLabel = document.getElementById("musicVolLabel") as HTMLLabelElement
+const MusicVolumeSlider = document.getElementById("musicVol") as HTMLInputElement
+const SFXVolumeLabel = document.getElementById("SFXVolLabel") as HTMLLabelElement
+const SFXVolumeSlider = document.getElementById("SFXVol") as HTMLInputElement
 let frame = 0;
 let grid: bool2d = [];
 let Sounds = new SoundsClass();
-
+let hasClicked = false;
+let optionsEnabled = false;
+let playing = false;
 let width = _.floor(window.innerWidth / grid_size) * grid_size;
 let height = _.floor(window.innerHeight / grid_size) * grid_size;
 canvas.width = width;
@@ -162,7 +169,14 @@ function init() {
     step()
 
     random_grid()
-    Sounds.playMusic()
+    loadLocalStorage();
+    addEventListener("click", () => {
+        if (!hasClicked) {
+            hasClicked = true
+            Sounds.playMusic()
+
+        }
+    })
     setInterval(() => {
         if (!playerEnabled) {
             random_grid()
@@ -174,12 +188,48 @@ function init() {
         optionsMenu.style.display = "flex"
         menuDiv.style.display = "none"
     })
+    optionsBackButton2.style.display = "none"
+
     optionsMenu.style.display = "none"
     optionsBackButton.addEventListener("click", () => {
         optionsMenu.style.display = "none"
         menuDiv.style.display = "flex";
-    })
 
+    })
+    SFXVolumeSlider.addEventListener("input", (e) => {
+        Sounds.SFXvolume = SFXVolumeSlider.valueAsNumber / 100
+        SFXVolumeLabel.innerText = `SFX Volume: ${SFXVolumeSlider.value}%`
+        localStorage.setItem("sfxVolume", SFXVolumeSlider.value)
+
+    })
+    MusicVolumeSlider.addEventListener("input", (e) => {
+        Sounds.MusicVolume = MusicVolumeSlider.valueAsNumber / 100
+        MusicVolumeLabel.innerText = `Music Volume: ${MusicVolumeSlider.value}%`
+        localStorage.setItem("musicVolume", MusicVolumeSlider.value)
+    })
+    optionsBackButton2.addEventListener("click", () => {
+        if (playing) {
+            if (!optionsEnabled) {
+                optionsEnabled = true;
+                playerEnabled = false;
+
+                enabled = false;
+                optionsMenu.style.display = "flex"
+                canvas.classList.add("blur")
+                optionsBackButton.style.display = "none";
+                optionsBackButton2.style.display = "flex"
+
+
+            } else {
+                optionsEnabled = false;
+                enabled = true;
+                playerEnabled = true;
+                optionsMenu.style.display = "none";
+                canvas.classList.remove("blur")
+                optionsBackButton2.style.display = "none"
+            }
+        }
+    })
 }
 playButton.addEventListener("click", () => {
     canvas.classList.remove("blur")
@@ -190,14 +240,15 @@ playButton.addEventListener("click", () => {
     Place.block(grid, 26, 30)
     Place.blinker_h(grid, 30, 15)
     menuDiv.style.display = "none"
+    playing = true;
 })
 
 setInterval(() => {
     if (enabled) step()
 }, 1000 / fps)
 
-addEventListener("keypress", (ev) => {
-    switch (ev.key) {
+addEventListener("keydown", (ev) => {
+    switch (ev.key.toLowerCase()) {
         case "y":
             if (!enabled) {
                 step()
@@ -232,10 +283,44 @@ addEventListener("keypress", (ev) => {
         case "k":
             location.reload();
             break;
+        case "escape":
+            if (playing) {
+                if (!optionsEnabled) {
+                    optionsEnabled = true;
+                    playerEnabled = false;
+
+                    enabled = false;
+                    optionsMenu.style.display = "flex"
+                    canvas.classList.add("blur")
+                    optionsBackButton.style.display = "none";
+                    optionsBackButton2.style.display = "flex"
+
+
+                } else {
+                    optionsEnabled = false;
+                    enabled = true;
+                    playerEnabled = true;
+                    optionsMenu.style.display = "none";
+                    canvas.classList.remove("blur")
+                    optionsBackButton2.style.display = "none"
+                }
+            }
+            break
+
+
 
     }
 })
 init()
+function loadLocalStorage() {
+    Sounds.SFXvolume = (Number(localStorage.getItem("sfxVolume")) || 50) / 100;
+    Sounds.MusicVolume = (Number(localStorage.getItem("musicVolume")) || 50) / 100;
+    MusicVolumeSlider.value = (Sounds.MusicVolume * 100).toFixed(0);
+    SFXVolumeSlider.value = (Sounds.SFXvolume * 100).toFixed(0);
+    SFXVolumeLabel.innerText = `SFX Volume: ${SFXVolumeSlider.value}%`;
+    MusicVolumeLabel.innerText = `Music Volume: ${MusicVolumeSlider.value}%`;
+}
+
 function check_for_death() {
     if (player.x < 0 || player.y < 0 || player.x > width || player.y > height) {
         player.x = 20 * grid_size;

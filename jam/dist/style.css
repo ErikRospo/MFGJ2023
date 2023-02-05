@@ -82,4 +82,95 @@
 
 #backButton {
     color: white;
+    position: fixed;
+    right: 2px;
+    left: 2px;
+}
+#backButton2 {
+    color: white;
+    position: fixed;
+    right: 2px;
+    left: 2px;
+}
+
+.SliderLabel {
+    color: white;
+}
+
+.sliderContainer {
+    width: 90%;
+    /* Width of the outside container */
+}
+
+
+/* The slider itself */
+.slider {
+    -webkit-appearance: none;
+    /* Override default CSS styles */
+    appearance: none;
+    width: 90%;
+    /* Full-width */
+    height: 25px;
+    /* Specified height */
+    background: #d3d3d3;
+    /* Grey background */
+    outline: none;
+    /* Remove outline */
+    opacity: 0.7;
+    /* Set transparency (for mouse-over effects on hover) */
+    -webkit-transition: .2s;
+    /* 0.2 seconds transition on hover */
+    transition: opacity .2s;
+}
+
+/* Mouse-over effects */
+.slider:hover {
+    opacity: 1;
+    /* Fully shown on mouse-over */
+}
+
+/* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    /* Override default look */
+    appearance: none;
+    width: 25px;
+    /* Set a specific slider handle width */
+    height: 25px;
+    /* Slider handle height */
+    background: white;
+    /* Green background */
+    cursor: pointer;
+    /* Cursor on hover */
+}
+
+.slider::-moz-range-thumb {
+    width: 25px;
+    /* Set a specific slider handle width */
+    height: 25px;
+    /* Slider handle height */
+    background: black;
+    /* Green background */
+    cursor: pointer;
+    /* Cursor on hover */
+}
+
+#optionsBox {
+    display: flex;
+    flex-direction: column;
+    color: white;
+    border: 2px solid white;
+    background-color: black;
+    vertical-align: middle;
+    width: 25%;
+    transform:translate(0%, calc(50vh - 50%));
+}
+
+#optionsMenu {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: center;
+    align-items: center;
 }

@@ -54,13 +54,13 @@ export class Sounds {
         MainSongV2.pause()
         MainSongV2.currentTime = 0;
         if (musicId === 0) {
-            MainSong.play()
+            MainSong.play().catch((e)=>{console.log("Couldn't play music:"+e)})
             MainSong.addEventListener("ended", () => { this.playMusic() })
         } else if (musicId === 1) {
-            MainSongV1.play()
+            MainSongV1.play().catch((e)=>{console.log("Couldn't play music:"+e)})
             MainSongV1.addEventListener("ended", () => { this.playMusic() })
         } else if (musicId === 2) {
-            MainSongV2.play()
+            MainSongV2.play().catch((e)=>{console.log("Couldn't play music:"+e)})
             MainSongV2.addEventListener("ended", () => { this.playMusic() })
         }
     }
