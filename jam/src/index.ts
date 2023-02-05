@@ -275,7 +275,7 @@ addEventListener("keydown", (ev) => {
             }
             break;
         case "l":
-            levelList.loadNext(player,grid)
+            levelList.loadNext(player, grid)
             // let pb = padbool2d(level, grid[0].length, grid.length);
 
             break;
