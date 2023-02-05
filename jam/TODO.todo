@@ -2,14 +2,14 @@
 [x] player collisions
 [x] player collision response
 [x] accept RLE
-[ ] pause menu
-[ ] main menu
+[x] pause menu
+[x] main menu
 [ ] levels
 [ ] level select
 [ ] save/load levels
 [ ] have camera follow player
 [ ] simulate grid outside of camera view
 [ ] player texture?
-[ ] audio
-[ ] music
-[ ] sfx
+[x] audio
+[x] music
+[x] sfx

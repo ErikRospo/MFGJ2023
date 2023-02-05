@@ -5,12 +5,11 @@ import * as PIXI from 'pixi.js';
 import { Place } from './patterns';
 import { Player } from './player';
 import { bool2d } from './types';
-import level from "./levels/gospergun.rle";
+import { levelList } from './levels';
 import { padbool2d } from './utility';
 import { PhysicsBody } from './classes/PhysicsBody';
 import { grid_size, fps } from './constants';
 
-console.log(level);
 const canvas = document.createElement('canvas');
 const ctx = canvas.getContext("2d");
 canvas.id = "canvasElm"
@@ -276,8 +275,8 @@ addEventListener("keydown", (ev) => {
             }
             break;
         case "l":
-            let pb = padbool2d(level, grid[0].length, grid.length);
-            grid = pb;
+            levelList.loadNext(player,grid)
+            // let pb = padbool2d(level, grid[0].length, grid.length);
 
             break;
         case "k":
