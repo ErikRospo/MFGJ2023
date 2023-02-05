@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack",
-    "serve": "webpack serve"
+    "serve": "webpack serve",
+    "prod":"webpack -c ./webpack.config_prod.js&&zip -r build.zip dist"
   },
   "author": "Erik Rospo",
   "license": "GPLv3",
