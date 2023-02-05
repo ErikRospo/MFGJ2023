@@ -1,5 +1,6 @@
 /// <reference path="../types.d.ts"/>
 import * as _ from 'lodash';
+import { Sounds as SoundsClass } from "./audioplayer"
 import * as PIXI from 'pixi.js';
 import { Place } from './patterns';
 import { Player } from './player';
@@ -11,10 +12,14 @@ import { grid_size, fps } from './constants';
 console.log(level);
 const canvas = document.createElement('canvas');
 const ctx = canvas.getContext("2d");
+canvas.id = "canvasElm"
 document.body.appendChild(canvas);
+
+const playButton = document.getElementById("playButton");
+const menuDiv = document.getElementById("menuDiv")
 let frame = 0;
 let grid: bool2d = [];
-
+let Sounds = new SoundsClass();
 
 let width = _.floor(window.innerWidth / grid_size) * grid_size;
 let height = _.floor(window.innerHeight / grid_size) * grid_size;
@@ -33,6 +38,7 @@ function reset(): void {
 }
 reset()
 let player = new Player(20 * grid_size, 0, grid_size, grid_size);
+let playerEnabled: boolean = false;
 
 /**
  * Draws a square at a location, (`x`,`y`), that has a side length of `s`   
@@ -52,10 +58,7 @@ function drawSquare(x: number, y: number, s: number, state: boolean = false): vo
 // Place.glider(grid, 10, 5)
 // Place.glider(grid, 5, 10)
 // Place.glider(grid, 10, 10)
-Place.block(grid, 20, 30)
-Place.block(grid, 23, 30)
-Place.block(grid, 26, 30)
-Place.blinker_h(grid, 30, 15)
+
 // Place.blinker_v(grid, 18, 30)
 
 function updateGol(oldgrid: bool2d): bool2d {
@@ -121,32 +124,54 @@ function render(rendergrid: bool2d = grid) {
             // }
         }
     }
-    player.render(ctx, grid_size);
-
+    if (playerEnabled) {
+        player.render(ctx, grid_size);
+    }
 }
 function step() {
     if (frame % 5 == 0) {
         grid = updateGol(grid);
     }
     frame += 1;
-    player.update(0.5);
+    if (playerEnabled) {
+        player.update(0.5);
+    }
     render(grid)
+    if (playerEnabled) {
+        player.collide(grid, grid_size)
 
-    player.collide(grid, grid_size)
-
-    if (player.x < 0 || player.y < 0 || player.x > width || player.y > height) {
-        player.x = 20 * grid_size
-        player.y = 0
-        player.ax = 0
-        player.ay = 0
-        player.vx = 0
-        player.vy = 0;
-        // let player = new Player(20 * grid_size, 0, grid_size, grid_size);
+        check_for_death();
 
     }
 
 }
-let enabled = !false
+let enabled = true
+function random_grid() {
+    for (let x = 0; x < grid.length; x++) {
+        for (let y = 0; y < grid[x].length; y++) {
+            grid[x][y] = Math.random() > 0.5 ? grid[x][y] : Math.random() > 0.5;
+        }
+    }
+}
+random_grid()
+setInterval(() => {
+    if (!playerEnabled) {
+        random_grid()
+    }
+
+}, 20000)
+canvas.classList.add("blur")
+playButton.addEventListener("click", () => {
+    canvas.classList.remove("blur")
+    playerEnabled = true;
+    reset()
+    Place.block(grid, 20, 30)
+    Place.block(grid, 23, 30)
+    Place.block(grid, 26, 30)
+    Place.blinker_h(grid, 30, 15)
+    menuDiv.style.display = "none"
+})
+
 setInterval(() => {
     if (enabled) step()
 }, 1000 / fps)
@@ -167,16 +192,19 @@ addEventListener("keypress", (ev) => {
             reset()
             break;
         case "w":
-            if (player.grounded) {
+            if (player.grounded && playerEnabled) {
                 player.vy = -20;
+                Sounds.jump()
             }
             break;
         case "a":
-            player.vx = -2;
+            if (playerEnabled)
+                player.vx = -2;
             break;
         case "d":
-
-            player.vx = 2;
+            if (playerEnabled) {
+                player.vx = 2;
+            }
             break;
         case "l":
             let pb = padbool2d(level, grid[0].length, grid.length);
@@ -189,4 +217,19 @@ addEventListener("keypress", (ev) => {
 
     }
 })
-step()
+
+function check_for_death() {
+    if (player.x < 0 || player.y < 0 || player.x > width || player.y > height) {
+        player.x = 20 * grid_size;
+        player.y = 0;
+        player.ax = 0;
+        player.ay = 0;
+        player.vx = 0;
+        player.vy = 0;
+        Sounds.die()
+        return true
+    }
+    else {
+        return false
+    }
+}
