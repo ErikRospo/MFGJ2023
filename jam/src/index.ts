@@ -9,14 +9,17 @@ import level from "./levels/gospergun.rle";
 import { padbool2d } from './utility';
 import { PhysicsBody } from './classes/PhysicsBody';
 import { grid_size, fps } from './constants';
+
 console.log(level);
 const canvas = document.createElement('canvas');
 const ctx = canvas.getContext("2d");
 canvas.id = "canvasElm"
 document.body.appendChild(canvas);
-
 const playButton = document.getElementById("playButton");
 const menuDiv = document.getElementById("menuDiv")
+const optionsMenu = document.getElementById("optionsMenu");
+const optionsButton = document.getElementById("optionsButton");
+const optionsBackButton = document.getElementById("backButton");
 let frame = 0;
 let grid: bool2d = [];
 let Sounds = new SoundsClass();
@@ -153,14 +156,31 @@ function random_grid() {
         }
     }
 }
-random_grid()
-setInterval(() => {
-    if (!playerEnabled) {
-        random_grid()
-    }
+function init() {
+    menuDiv.style.display = "flex"
+    playerEnabled = false;
+    step()
 
-}, 20000)
-canvas.classList.add("blur")
+    random_grid()
+    Sounds.playMusic()
+    setInterval(() => {
+        if (!playerEnabled) {
+            random_grid()
+        }
+
+    }, 20000)
+    canvas.classList.add("blur")
+    optionsButton.addEventListener("click", () => {
+        optionsMenu.style.display = "flex"
+        menuDiv.style.display = "none"
+    })
+    optionsMenu.style.display = "none"
+    optionsBackButton.addEventListener("click", () => {
+        optionsMenu.style.display = "none"
+        menuDiv.style.display = "flex";
+    })
+
+}
 playButton.addEventListener("click", () => {
     canvas.classList.remove("blur")
     playerEnabled = true;
@@ -184,14 +204,12 @@ addEventListener("keypress", (ev) => {
             }
 
             break
-        case "t":
-        case " ":
-            enabled = !enabled
-            break;
+
         case "r":
             reset()
             break;
         case "w":
+        case " ":
             if (player.grounded && playerEnabled) {
                 player.vy = -20;
                 Sounds.jump()
@@ -217,7 +235,7 @@ addEventListener("keypress", (ev) => {
 
     }
 })
-
+init()
 function check_for_death() {
     if (player.x < 0 || player.y < 0 || player.x > width || player.y > height) {
         player.x = 20 * grid_size;

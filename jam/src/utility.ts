@@ -22,7 +22,7 @@ export function floorTo(v: number, n: number) {
  * @param {number} v The value to round
  */
 export function floorToGrid(v: number) {
-    return floorTo(v,grid_size);
+    return floorTo(v, grid_size);
 }
 /**
  * Rounds a number `v` up to the nearest multiple of n
@@ -49,14 +49,14 @@ export function abs(n: number): number {
  * @returns {bool2d} The array, padded out to width X height
  */
 export function padbool2d(array: bool2d, width: number, height: number, val: boolean = false): bool2d {
-    let newarray=[]
-    for (let index=0; index<height;index++){
-        let element=array[index]??Array(width).fill(val);
-        if (element.length!=width){
-            element=element.concat(Array(width-array[index].length).fill(val))
+    let newarray = []
+    for (let index = 0; index < height; index++) {
+        let element = array[index] ?? Array(width).fill(val);
+        if (element.length != width) {
+            element = element.concat(Array(width - array[index].length).fill(val))
         }
-        newarray[index]=element;
-        
+        newarray[index] = element;
+
     }
     return newarray
 }
