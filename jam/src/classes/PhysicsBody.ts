@@ -1,8 +1,7 @@
-import * as _ from 'lodash';
 
 import { Point } from 'pixi.js';
 import { GRAVITY, SMOOTH } from '../constants';
-import { abs, floorTo, floorToGrid } from '../utility';
+import { abs, clamp, floorTo, floorToGrid } from '../utility';
 export class PhysicsBody {
     /**Position*/
     pos: Point;
@@ -127,8 +126,8 @@ export class PhysicsBody {
         this.y += this.vy * dt;
         this.vx += this.ax * dt;
         this.vy += this.ay * dt;
-        this.vx = _.clamp(this.vx, -this.maxVel.x, this.maxVel.x)
-        this.vy = _.clamp(this.vy, -this.maxVel.y, this.maxVel.y)
+        this.vx = clamp(this.vx, -this.maxVel.x, this.maxVel.x)
+        this.vy = clamp(this.vy, -this.maxVel.y, this.maxVel.y)
         this.ax = 0;
         if (this.gravity) {
             this.ay = GRAVITY;

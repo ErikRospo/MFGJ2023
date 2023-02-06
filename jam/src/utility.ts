@@ -60,3 +60,13 @@ export function padbool2d(array: bool2d, width: number, height: number, val: boo
     }
     return newarray
 }
+/**
+ * Clamps a value to a range, min-max, inclusive
+ * @param {number} value The value to clamp
+ * @param {number} min The minimum value
+ * @param {number} max The maximum value
+ * @return {number} the value, clamped to the range
+ */
+export function clamp(value: number, min: number, max: number): number {
+    return Math.min(max, Math.max(min, value))
+}

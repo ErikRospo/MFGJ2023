@@ -1,13 +1,9 @@
 /// <reference path="../types.d.ts"/>
-import * as _ from 'lodash';
 import { Sounds as SoundsClass } from "./audioplayer"
-import * as PIXI from 'pixi.js';
 import { Place } from './patterns';
 import { Player } from './player';
 import { bool2d } from './types';
 import { levelList } from './levels';
-import { padbool2d } from './utility';
-import { PhysicsBody } from './classes/PhysicsBody';
 import { grid_size, fps } from './constants';
 
 const canvas = document.createElement('canvas');
@@ -30,8 +26,8 @@ let Sounds = new SoundsClass();
 let hasClicked = false;
 let optionsEnabled = false;
 let playing = false;
-let width = _.floor(window.innerWidth / grid_size) * grid_size;
-let height = _.floor(window.innerHeight / grid_size) * grid_size;
+let width = Math.floor(window.innerWidth / grid_size) * grid_size;
+let height = Math.floor(window.innerHeight / grid_size) * grid_size;
 canvas.width = width;
 canvas.height = height;
 function reset(): void {
@@ -248,16 +244,7 @@ setInterval(() => {
 
 addEventListener("keydown", (ev) => {
     switch (ev.key.toLowerCase()) {
-        case "y":
-            if (!enabled) {
-                step()
-            }
 
-            break
-
-        case "r":
-            reset()
-            break;
         case "w":
         case " ":
             if (player.grounded && playerEnabled) {
@@ -279,9 +266,7 @@ addEventListener("keydown", (ev) => {
             // let pb = padbool2d(level, grid[0].length, grid.length);
 
             break;
-        case "k":
-            location.reload();
-            break;
+
         case "escape":
             if (playing) {
                 if (!optionsEnabled) {
