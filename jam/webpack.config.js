@@ -15,7 +15,7 @@ module.exports = {
         use: './rle-loader.js'
       },
       {
-        test: /\.wav$/,
+        test: /\.mp3$/,
         type: 'asset/resource'
       }
     ]

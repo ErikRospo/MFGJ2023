@@ -1,9 +1,9 @@
 /// <reference path="../types.d.ts"/>
-import jumpSound_src from "./assets/audio/sfx/jump.wav"
-import dieSound_src from "./assets/audio/sfx/hurt.wav"
-import MainSong_src from "./assets/audio/music/MainSong.wav"
-import MainSongV1_src from "./assets/audio/music/MainSongV1.wav"
-import MainSongV2_src from "./assets/audio/music/MainSongV2.wav"
+import jumpSound_src from "./assets/audio/sfx/jump.mp3"
+import dieSound_src from "./assets/audio/sfx/hurt.mp3"
+import MainSong_src from "./assets/audio/music/MainSong.mp3"
+import MainSongV1_src from "./assets/audio/music/MainSongV1.mp3"
+import MainSongV2_src from "./assets/audio/music/MainSongV2.mp3"
 const jumpSound = new Audio(jumpSound_src);
 const dieSound = new Audio(dieSound_src);
 const MainSong = new Audio(MainSong_src);

@@ -4,7 +4,7 @@ declare module "*.rle" {
   export default level;
 
 }
-declare module "*.wav" {
+declare module "*.mp3" {
   let audio: any;
   export default audio;
 }
