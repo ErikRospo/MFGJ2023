@@ -9,5 +9,5 @@ export type Level = {
     grid: bool2d
     start: vec2
     end: vec2
-
+    gridOffset?:vec2
 }

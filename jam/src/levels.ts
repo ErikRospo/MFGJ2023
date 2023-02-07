@@ -4,7 +4,7 @@ import level1 from "./levels/blonkers.rle"
 import level2 from "./levels/glider_intercept1.rle"
 import level3 from "./levels/glider_intercept2.rle"
 import { grid_size } from "./constants";
-import { padbool2d } from "./utility";
+import { overlay2DBools, padbool2dBR, rotate } from "./utility";
 export class Levels {
     levels: Level[] = []
     currentlevel: number = 0
@@ -23,7 +23,16 @@ export class Levels {
             player.x = level.start.x * grid_size
             player.y = level.start.y * grid_size
             player.end = { x: level.end.x, y: level.end.y }
-            grid = padbool2d(level.grid, grid[0].length, grid.length);
+            if (level.gridOffset) {
+                let newEmpty:bool2d = Array(grid[0].length).map(() => Array(grid.length).fill(false) )
+                grid = padbool2dBR(overlay2DBools(newEmpty, level.grid, level.gridOffset.x, level.gridOffset.y),
+                    grid[0].length,
+                    grid.length);
+
+            } else {
+
+                grid = padbool2dBR(level.grid, grid[0].length, grid.length);
+            }
         }
         return grid
     }
@@ -31,13 +40,13 @@ export class Levels {
         this.currentlevel++
         return this.loadLevel(player, grid, this.currentlevel)
     }
-    save() {
-
+    reload(player: Player, grid: bool2d) {
+        return this.loadLevel(player, grid, this.currentlevel)
     }
 }
 
 let levelList = new Levels()
-levelList.addLevel({ grid: level1, start: { x: 20, y: 0 }, end: { x: 22, y: 15 } })
-levelList.addLevel({ grid: level2, start: { x: 20, y: 0 }, end: { x: 22, y: 15 } })
-levelList.addLevel({ grid: level3, start: { x: 20, y: 0 }, end: { x: 22, y: 15 } })
+levelList.addLevel({ grid: rotate(level1), start: { x: 20, y: 0 }, end: { x: 22, y: 15 }, gridOffset: { x: 5, y: 10 } })
+levelList.addLevel({ grid: rotate(level2), start: { x: 20, y: 0 }, end: { x: 22, y: 15 } })
+levelList.addLevel({ grid: rotate(level3), start: { x: 20, y: 0 }, end: { x: 22, y: 15 } })
 export default levelList

@@ -1,5 +1,3 @@
-/** @param {Buffer} content */
-module.exports = function (content) {
   // from https://github.com/timjacksonm/rle-decoder/blob/main/
   /**
    * Converts a RLE string into a 2d bool array
@@ -103,7 +101,36 @@ module.exports = function (content) {
 
     return decoded
   }
+function encodeRLEString(grid) {
+  let rleString = '';
+  let currentRow = 0;
+  while (currentRow < grid.length) {
+    let currentColumn = 0;
+    while (currentColumn < grid[currentRow].length) {
+      let runLength = 1;
+      while (currentColumn + runLength < grid[currentRow].length &&
+             grid[currentRow][currentColumn + runLength] === grid[currentRow][currentColumn]) {
+        runLength++;
+      }
+      if (grid[currentRow][currentColumn]) {
+        rleString += 'o' + (runLength > 1 ? runLength : '');
+      } else {
+        rleString += 'b' + (runLength > 1 ? runLength : '');
+      }
+      currentColumn += runLength;
+    }
+    rleString += '$';
+    currentRow++;
+  }
+  return rleString;
+}
+/** @param {Buffer} content */
+module.exports = function (content) {
+
   return `export default JSON.parse("${JSON.stringify(
     decodeRLE(content.toString('utf-8'))
   )}")`
 }
+
+module.exports.decodeRLE=decodeRLE
+module.exports.encodeRLE=encodeRLEString

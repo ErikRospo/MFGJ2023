@@ -4,7 +4,7 @@ import { Place } from './patterns';
 import { Player } from './player';
 import { bool2d } from './types';
 import levelList from './levels';
-import { grid_size, fps } from './constants';
+import { grid_size, fps, EndColor } from './constants';
 import SaveFile from "./savefile";
 const canvas = document.createElement('canvas');
 const ctx = canvas.getContext("2d");
@@ -49,17 +49,31 @@ let player = new Player(20 * grid_size, 0, grid_size, grid_size);
 let playerEnabled: boolean = false;
 
 /**
- * Draws a square at a location, (`x`,`y`), that has a side length of `s`   
+ * Draws a square at a location, (`x`,`y`) on the grid, that has a side length of `s`   
  * If state is false, the square is black, otherwise, it is white;
  * @param {number} x the x position to draw the square at
  * @param {number} y the y position to draw the square at
  * @param {number} s the square's side length
  * @param {boolean} state whether to draw the square as black (false) or white (true)
  */
-function drawSquare(x: number, y: number, s: number, state: boolean = false): void {
+function drawSquare(x: number, y: number, s: number = grid_size, state: boolean = false): void {
     ctx.save()
     ctx.fillStyle = state ? "white" : "black";
-    ctx.fillRect(x, y, s, s);
+    ctx.fillRect(x * grid_size, y * grid_size, s, s);
+    ctx.restore()
+}
+/**
+ * Draws a square at a location, (`x`,`y`) on the grid, that has a side length of `s`   
+ * If state is false, the square is black, otherwise, it is white;
+ * @param {number} x the x position to draw the square at
+ * @param {number} y the y position to draw the square at
+ * @param {number} s the square's side length
+ * @param {string} color whether to draw the square as black (false) or white (true)
+ */
+function drawSquareColor(x: number, y: number, s: number = grid_size, color: string = "#000000"): void {
+    ctx.save()
+    ctx.fillStyle = color;
+    ctx.fillRect(x * grid_size, y * grid_size, s, s);
     ctx.restore()
 }
 
@@ -104,7 +118,12 @@ function render(rendergrid: bool2d = grid) {
 
         for (let y = 0; y < height / grid_size; y++) {
 
-            drawSquare(x * grid_size, y * grid_size, grid_size, rendergrid[x][y])
+            if (playerEnabled && x == player.end.x && y == player.end.y) {
+                drawSquareColor(x, y, grid_size, EndColor)
+            } else {
+
+                drawSquare(x, y, grid_size, rendergrid[x][y])
+            }
 
         }
     }
@@ -121,10 +140,15 @@ function step() {
         player.update(0.5);
     }
     render(grid)
+
+
     if (playerEnabled) {
         player.collide(grid)
 
-        check_for_death();
+        let dead=check_for_death();
+        if (dead){
+            grid=levelList.reload(player,grid)
+        }
         if (player.checkForWin()) {
             savefile.levelsCompleted[levelList.currentlevel] = true
             grid = levelList.loadNext(player, grid)
@@ -175,6 +199,9 @@ function init() {
         menuDiv.style.display = "flex";
 
     })
+    SFXVolumeSlider.valueAsNumber = Sounds.SFXvolume * 100
+    MusicVolumeSlider.valueAsNumber = Sounds.MusicVolume * 100
+
     SFXVolumeSlider.addEventListener("input", (e) => {
         Sounds.SFXvolume = SFXVolumeSlider.valueAsNumber / 100
         SFXVolumeLabel.innerText = `SFX Volume: ${SFXVolumeSlider.value}%`

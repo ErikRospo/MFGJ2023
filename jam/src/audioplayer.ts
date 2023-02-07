@@ -4,6 +4,7 @@ import dieSound_src from "./assets/audio/sfx/hurt.mp3"
 import MainSong_src from "./assets/audio/music/MainSong.mp3"
 import MainSongV1_src from "./assets/audio/music/MainSongV1.mp3"
 import MainSongV2_src from "./assets/audio/music/MainSongV2.mp3"
+import { DEBUG } from "./constants"
 const jumpSound = new Audio(jumpSound_src);
 const dieSound = new Audio(dieSound_src);
 const MainSong = new Audio(MainSong_src);
@@ -11,11 +12,15 @@ const MainSongV1 = new Audio(MainSongV1_src);
 const MainSongV2 = new Audio(MainSongV2_src);
 
 export class Sounds {
-    private _sfxVolume: number = 0.5;
-    private _musicVolume: number = 0.5;
+    private _sfxVolume: number = DEBUG ? 0 : 0.5;
+    private _musicVolume: number = DEBUG ? 0 : 0.5;
     constructor() {
         jumpSound.volume = this._sfxVolume;
         dieSound.volume = this._sfxVolume
+        MainSong.volume = this._musicVolume
+        MainSongV1.volume = this._musicVolume
+        MainSongV2.volume = this._musicVolume
+
     }
     jump() {
 
