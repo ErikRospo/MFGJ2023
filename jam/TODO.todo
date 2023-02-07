@@ -4,12 +4,17 @@
 [x] accept RLE
 [x] pause menu
 [x] main menu
-[ ] levels
-[ ] level select
-[ ] save/load levels
-[ ] have camera follow player
-[ ] simulate grid outside of camera view
-[ ] player texture?
 [x] audio
 [x] music
 [x] sfx
+[ ] levels
+[ ] level select
+    [ ] typescript manager
+    [ ] localStorage save/load
+    [ ] html select screen
+[ ] save/load levels
+[ ] rotate RLEs exported by copy.sh
+[ ] css animations for menus
+    [ ] slide in from top menu
+    [ ] fade in/out title
+[ ] mobile detection and error screen

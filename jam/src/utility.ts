@@ -1,6 +1,6 @@
 import { grid_size } from "./constants";
 import { bool2d } from "./types";
-
+export const floor=Math.floor
 /**
  * Rounds a number `v` to the nearest multiple of n
  * @param {number} v The value to round

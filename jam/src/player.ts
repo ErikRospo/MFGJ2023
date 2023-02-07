@@ -1,19 +1,19 @@
 import { Point } from 'pixi.js';
 import { PhysicsBody } from './classes/PhysicsBody';
-import { DEBUG, PlayerColor, SCALE_FACTOR } from './constants';
-import { bool2d } from './types';
-import { abs, floorTo, floorToGrid } from './utility';
-const floor = Math.floor
+import { DEBUG, grid_size, PlayerColor, SCALE_FACTOR } from './constants';
+import { bool2d, vec2 } from './types';
+import { floorTo, floorToGrid, floor } from './utility';
 export class Player extends PhysicsBody {
 
     color: string = PlayerColor; //sky blue
     grounded: boolean = false;
+    end: vec2;
     constructor(x: number, y: number, width: number, height: number) {
         super(x, y, width, height, new Point(30, 30));
 
     }
-    render(ctx: CanvasRenderingContext2D, grid_size: number): void {
-        super.render(ctx, grid_size);
+    render(ctx: CanvasRenderingContext2D): void {
+        super.render(ctx);
         if (DEBUG) {
             this.drawDebugArrows(ctx, 5);
         }
@@ -23,11 +23,9 @@ export class Player extends PhysicsBody {
         this.gravity = !this.grounded;
         super.update(dt);
     }
-    collide(grid: bool2d, grid_size: number): void {
+    collide(grid: bool2d): void {
         //TODO: don't pass `grid_size` as a parameter, and instead import it directly.
         //This applies to all uses
-        let fx = floorTo(this.x, grid_size);
-        let fy = floorTo(this.y, grid_size);
         let gx = floor(this.x / grid_size);
         let gy = floor(this.y / grid_size);
         if (grid[gx][gy - 1]) {
@@ -50,5 +48,10 @@ export class Player extends PhysicsBody {
             this.vx = 0;
         }
 
+    }
+    checkForWin() {
+        let gx = floor(this.x / grid_size);
+        let gy = floor(this.y / grid_size);
+        return gx === this.end.x && gy === this.end.y
     }
 }

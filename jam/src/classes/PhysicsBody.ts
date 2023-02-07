@@ -109,7 +109,7 @@ export class PhysicsBody {
         }
         this._maxVel = new Point(abs(v.x), abs(v.y));
     }
-    render(ctx: CanvasRenderingContext2D, grid_size: number): void {
+    render(ctx: CanvasRenderingContext2D): void {
         ctx.save();
         ctx.fillStyle = (typeof this.color == "boolean" ? (this.color ? "black" : "white") : this.color);
 

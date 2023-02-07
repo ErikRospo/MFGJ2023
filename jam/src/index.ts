@@ -3,9 +3,9 @@ import { Sounds as SoundsClass } from "./audioplayer"
 import { Place } from './patterns';
 import { Player } from './player';
 import { bool2d } from './types';
-import { levelList } from './levels';
+import levelList from './levels';
 import { grid_size, fps } from './constants';
-
+import SaveFile from "./savefile";
 const canvas = document.createElement('canvas');
 const ctx = canvas.getContext("2d");
 canvas.id = "canvasElm"
@@ -20,6 +20,9 @@ const MusicVolumeLabel = document.getElementById("musicVolLabel") as HTMLLabelEl
 const MusicVolumeSlider = document.getElementById("musicVol") as HTMLInputElement
 const SFXVolumeLabel = document.getElementById("SFXVolLabel") as HTMLLabelElement
 const SFXVolumeSlider = document.getElementById("SFXVol") as HTMLInputElement
+let savefile = new SaveFile()
+savefile.load(levelList.levelsnum)
+
 let frame = 0;
 let grid: bool2d = [];
 let Sounds = new SoundsClass();
@@ -59,12 +62,7 @@ function drawSquare(x: number, y: number, s: number, state: boolean = false): vo
     ctx.fillRect(x, y, s, s);
     ctx.restore()
 }
-// Place.glider(grid, 5, 5)
-// Place.glider(grid, 10, 5)
-// Place.glider(grid, 5, 10)
-// Place.glider(grid, 10, 10)
 
-// Place.blinker_v(grid, 18, 30)
 
 function updateGol(oldgrid: bool2d): bool2d {
     let newgrid: bool2d = [];
@@ -107,30 +105,11 @@ function render(rendergrid: bool2d = grid) {
         for (let y = 0; y < height / grid_size; y++) {
 
             drawSquare(x * grid_size, y * grid_size, grid_size, rendergrid[x][y])
-            // if (x == px + 1 && y == py) {
-            //     ctx.fillStyle = "red"
-            //     ctx.fillRect(x * grid_size, y * grid_size, grid_size, grid_size);
 
-            // }
-            // if (x == px && y == py + 1) {
-            //     ctx.fillStyle = "green"
-            //     ctx.fillRect(x * grid_size, y * grid_size, grid_size, grid_size);
-
-            // }
-            // if (x == px && y == py - 1) {
-            //     ctx.fillStyle = "blue"
-            //     ctx.fillRect(x * grid_size, y * grid_size, grid_size, grid_size);
-
-            // }
-            // if (x == px - 1 && y == py) {
-            //     ctx.fillStyle = "yellow"
-            //     ctx.fillRect(x * grid_size, y * grid_size, grid_size, grid_size);
-
-            // }
         }
     }
     if (playerEnabled) {
-        player.render(ctx, grid_size);
+        player.render(ctx);
     }
 }
 function step() {
@@ -143,11 +122,16 @@ function step() {
     }
     render(grid)
     if (playerEnabled) {
-        player.collide(grid, grid_size)
+        player.collide(grid)
 
         check_for_death();
+        if (player.checkForWin()) {
+            savefile.levelsCompleted[levelList.currentlevel] = true
+            grid = levelList.loadNext(player, grid)
 
+        }
     }
+
 
 }
 let enabled = true
@@ -230,10 +214,7 @@ playButton.addEventListener("click", () => {
     canvas.classList.remove("blur")
     playerEnabled = true;
     reset()
-    Place.block(grid, 20, 30)
-    Place.block(grid, 23, 30)
-    Place.block(grid, 26, 30)
-    Place.blinker_h(grid, 30, 15)
+    grid = levelList.loadNext(player, grid)
     menuDiv.style.display = "none"
     playing = true;
 })
@@ -254,17 +235,24 @@ addEventListener("keydown", (ev) => {
             break;
         case "a":
             if (playerEnabled)
-                player.vx = -2;
+                if (player.grounded) {
+                    player.ax = -5;
+                } else {
+                    player.ax = -1
+                }
             break;
         case "d":
             if (playerEnabled) {
-                player.vx = 2;
+                if (player.grounded) {
+                    player.ax = 5;
+                } else {
+                    player.ax = 1
+                }
             }
             break;
         case "l":
-            levelList.loadNext(player, grid)
-            // let pb = padbool2d(level, grid[0].length, grid.length);
-
+            let newgrid = levelList.loadNext(player, grid)
+            grid = newgrid
             break;
 
         case "escape":
