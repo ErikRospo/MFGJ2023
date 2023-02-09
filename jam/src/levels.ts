@@ -24,14 +24,14 @@ export class Levels {
             player.y = level.start.y * grid_size
             player.end = { x: level.end.x, y: level.end.y }
             if (level.gridOffset) {
-                let newEmpty:bool2d = Array(grid[0].length).map(() => Array(grid.length).fill(false) )
+                let newEmpty: bool2d = Array(grid[0].length).map(() => Array(grid.length).fill(false))
                 grid = padbool2dBR(overlay2DBools(newEmpty, level.grid, level.gridOffset.x, level.gridOffset.y),
                     grid[0].length,
                     grid.length);
 
             } else {
-
-                grid = padbool2dBR(level.grid, grid[0].length, grid.length);
+            
+                // grid = padbool2dBR(level.grid, grid[0].length, grid.length);
             }
         }
         return grid

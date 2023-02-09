@@ -21,7 +21,7 @@ const MusicVolumeSlider = document.getElementById("musicVol") as HTMLInputElemen
 const SFXVolumeLabel = document.getElementById("SFXVolLabel") as HTMLLabelElement
 const SFXVolumeSlider = document.getElementById("SFXVol") as HTMLInputElement
 let savefile = new SaveFile()
-savefile.load(levelList.levelsnum)
+savefile.load(levelList.levelsnum);
 
 let frame = 0;
 let grid: bool2d = [];
@@ -33,7 +33,7 @@ let width = Math.floor(window.innerWidth / grid_size) * grid_size;
 let height = Math.floor(window.innerHeight / grid_size) * grid_size;
 canvas.width = width;
 canvas.height = height;
-function reset(): void {
+function reset_grid(): void {
     grid = [];
     for (let x = 0; x < width / grid_size; x++) {
         let temp_array: boolean[] = [];
@@ -44,7 +44,7 @@ function reset(): void {
 
     }
 }
-reset()
+reset_grid()
 let player = new Player(20 * grid_size, 0, grid_size, grid_size);
 let playerEnabled: boolean = false;
 
@@ -185,7 +185,7 @@ function init() {
             random_grid()
         }
 
-    }, 20000)
+    }, 25000)
     canvas.classList.add("blur")
     optionsButton.addEventListener("click", () => {
         optionsMenu.style.display = "flex"
@@ -240,7 +240,7 @@ function init() {
 playButton.addEventListener("click", () => {
     canvas.classList.remove("blur")
     playerEnabled = true;
-    reset()
+    reset_grid()
     grid = levelList.loadNext(player, grid)
     menuDiv.style.display = "none"
     playing = true;

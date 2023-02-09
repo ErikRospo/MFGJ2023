@@ -8,7 +8,8 @@
     "build": "webpack",
     "serve": "webpack serve",
     "server": "webpack serve",
-    "prod": "webpack -c ./webpack.config_prod.js && zip -r build.zip dist"
+    "prod": "webpack -c ./webpack.config_prod.js && zip -r build.zip dist",
+    "prodbutler": "./build.sh"
   },
   "author": "Erik Rospo",
   "license": "GPLv3",

@@ -95,18 +95,18 @@ export function rotate(grid: bool2d): bool2d {
 export function overlay2DBools(
     base: bool2d,
     inset: bool2d,
-    ox: number=0,
-    oy: number=0
-  ): bool2d {
+    ox: number = 0,
+    oy: number = 0
+): bool2d {
     const result = base.map(row => [...row]);
     for (let i = 0; i < inset.length; i++) {
-      for (let j = 0; j < inset[i].length; j++) {
-        const targetX = i + ox;
-        const targetY = j + oy;
-        if (targetX >= 0 && targetX < result.length && targetY >= 0 && targetY < result[i].length) {
-          result[targetX][targetY] = inset[i][j];
+        for (let j = 0; j < inset[i].length; j++) {
+            const targetX = i + ox;
+            const targetY = j + oy;
+            if (targetX >= 0 && targetX < result.length && targetY >= 0 && targetY < result[i].length) {
+                result[targetX][targetY] = inset[i][j];
+            }
         }
-      }
     }
     return result;
-  }
+}
