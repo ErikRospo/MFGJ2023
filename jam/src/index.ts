@@ -4,8 +4,9 @@ import { Place } from './patterns';
 import { Player } from './player';
 import { bool2d } from './types';
 import levelList from './levels';
-import { grid_size, fps, EndColor } from './constants';
+import { grid_size, fps, EndColor, DEBUG } from './constants';
 import SaveFile from "./savefile";
+import { isMobile } from "pixi.js";
 const canvas = document.createElement('canvas');
 const ctx = canvas.getContext("2d");
 canvas.id = "canvasElm"
@@ -23,6 +24,8 @@ const SFXVolumeSlider = document.getElementById("SFXVol") as HTMLInputElement
 let savefile = new SaveFile()
 savefile.load(levelList.levelsnum);
 
+const MOBILE = isMobile.any;
+console.log(levelList)
 let frame = 0;
 let grid: bool2d = [];
 let Sounds = new SoundsClass();
@@ -89,7 +92,6 @@ function updateGol(oldgrid: bool2d): bool2d {
         for (let y = 0; y < gh; y++) {
             let total: number = 0;
 
-            // check the number of neighboring cells
 
             for (let i = -1; i <= 1; i++) {
                 for (let j = -1; j <= 1; j++) {
@@ -145,9 +147,9 @@ function step() {
     if (playerEnabled) {
         player.collide(grid)
 
-        let dead=check_for_death();
-        if (dead){
-            grid=levelList.reload(player,grid)
+        let dead = check_for_death();
+        if (dead) {
+            grid = levelList.reload(player, grid)
         }
         if (player.checkForWin()) {
             savefile.levelsCompleted[levelList.currentlevel] = true
@@ -188,8 +190,13 @@ function init() {
     }, 25000)
     canvas.classList.add("blur")
     optionsButton.addEventListener("click", () => {
-        optionsMenu.style.display = "flex"
-        menuDiv.style.display = "none"
+        if (MOBILE) {
+            mobileAlert();
+        }
+        else {
+            optionsMenu.style.display = "flex"
+            menuDiv.style.display = "none"
+        }
     })
     optionsBackButton2.style.display = "none"
 
@@ -202,13 +209,13 @@ function init() {
     SFXVolumeSlider.valueAsNumber = Sounds.SFXvolume * 100
     MusicVolumeSlider.valueAsNumber = Sounds.MusicVolume * 100
 
-    SFXVolumeSlider.addEventListener("input", (e) => {
+    SFXVolumeSlider.addEventListener("input", (_) => {
         Sounds.SFXvolume = SFXVolumeSlider.valueAsNumber / 100
         SFXVolumeLabel.innerText = `SFX Volume: ${SFXVolumeSlider.value}%`
         localStorage.setItem("sfxVolume", SFXVolumeSlider.value)
 
     })
-    MusicVolumeSlider.addEventListener("input", (e) => {
+    MusicVolumeSlider.addEventListener("input", (_) => {
         Sounds.MusicVolume = MusicVolumeSlider.valueAsNumber / 100
         MusicVolumeLabel.innerText = `Music Volume: ${MusicVolumeSlider.value}%`
         localStorage.setItem("musicVolume", MusicVolumeSlider.value)
@@ -238,12 +245,19 @@ function init() {
     })
 }
 playButton.addEventListener("click", () => {
-    canvas.classList.remove("blur")
-    playerEnabled = true;
-    reset_grid()
-    grid = levelList.loadNext(player, grid)
-    menuDiv.style.display = "none"
-    playing = true;
+    if (MOBILE) {
+        mobileAlert()
+    }
+    else {
+
+        canvas.classList.remove("blur")
+        playerEnabled = true;
+        reset_grid()
+        grid = levelList.loadNext(player, grid)
+        // Place.block(grid,Math.floor(player.x/grid_size),Math.floor(player.y/grid_size)+13)        
+        menuDiv.style.display = "none"
+        playing = true;
+    }
 })
 
 setInterval(() => {
@@ -278,8 +292,11 @@ addEventListener("keydown", (ev) => {
             }
             break;
         case "l":
-            let newgrid = levelList.loadNext(player, grid)
-            grid = newgrid
+            if (DEBUG) {
+                let newgrid = levelList.loadNext(player, grid)
+                grid = newgrid
+            }
+
             break;
 
         case "escape":
@@ -311,6 +328,10 @@ addEventListener("keydown", (ev) => {
     }
 })
 init()
+function mobileAlert() {
+    alert("This game is not designed for mobile. It requires a keyboard to play.");
+}
+
 function loadLocalStorage() {
     Sounds.SFXvolume = (Number(localStorage.getItem("sfxVolume")) || 50) / 100;
     Sounds.MusicVolume = (Number(localStorage.getItem("musicVolume")) || 50) / 100;

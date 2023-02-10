@@ -17,5 +17,6 @@
 [ ] css animations for menus
     [ ] slide in from top menu
     [ ] fade in/out title
-[ ] mobile detection and error screen
+[x] mobile detection
+    [ ] error screen
 [ ] fix error where clicking back button loads random grid

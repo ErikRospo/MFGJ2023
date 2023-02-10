@@ -5,7 +5,9 @@
 .monospace {
     font-family: 'Roboto Mono', monospace;
 }
-
+.noselect{
+    user-select: none;
+}
 .menubutton {
     background-color: black;
     border: 3px solid white;

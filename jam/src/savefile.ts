@@ -5,7 +5,7 @@ export default class SaveFile {
     isDev: boolean = DEBUG || false
     hasCompletedGame: boolean = false
 
-    save() {
+    save(): void {
         localStorage.setItem("save", JSON.stringify({ lc: this.levelsCompleted, id: this.isDev, hc: this.hasCompletedGame }))
 
     }

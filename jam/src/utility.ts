@@ -110,3 +110,6 @@ export function overlay2DBools(
     }
     return result;
 }
+export function newBool2D(width:number,height:number,value:boolean=false):bool2d{
+    return Array(width).map(() => Array(height).fill(value))
+}
