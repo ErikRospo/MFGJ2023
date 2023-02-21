@@ -13,7 +13,7 @@
     [ ] typescript manager
     [ ] localStorage save/load
     [ ] html select screen
-    [ ] don't immediatly transition from play button to actually playing the game.
+    [ ] don't immediately transition from play button to actually playing the game.
 [ ] save/load levels
 [ ] rotate RLEs exported by copy.sh
 [ ] css animations for menus
