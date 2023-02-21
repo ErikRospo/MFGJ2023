@@ -206,6 +206,7 @@ function init() {
     optionsBackButton.addEventListener("click", () => {
         optionsMenu.style.display = "none"
         menuDiv.style.display = "flex";
+        levelSelectDiv.style.display="none";
 
     })
     SFXVolumeSlider.valueAsNumber = Sounds.SFXvolume * 100
@@ -248,19 +249,27 @@ function init() {
         }
     })
     playButton.addEventListener("click", () => {
+
         if (MOBILE) {
             mobileAlert()
         }
         else {
+            if (savefile.levelsCompleted.length>0){
+            
+                levelSelectDiv.style.display = "grid";
+                menuDiv.style.display="none";
+                optionsMenu.style.display="none";
+                optionsBackButton.style.display="flex";
 
-            canvas.classList.remove("blur")
-            playerEnabled = true;
-            reset_grid()
-            grid = levelList.loadNext(player, grid)
-            // Place.block(grid,Math.floor(player.x/grid_size),Math.floor(player.y/grid_size)+13)        
-            menuDiv.style.display = "none"
-            playing = true;
-            levelSelectDiv.style.display = "grid"
+            }else{
+                canvas.classList.remove("blur");
+                playerEnabled = true;
+                reset_grid();
+                grid = levelList.loadNext(player, grid);
+                // Place.block(grid,Math.floor(player.x/grid_size),Math.floor(player.y/grid_size)+13)        
+                menuDiv.style.display = "none";
+                playing = true;
+            }
         }
     })
     let _tmp=document.getElementById("titleText")

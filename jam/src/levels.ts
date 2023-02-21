@@ -6,8 +6,8 @@ import level3 from "./levels/glider_intercept2.rle"
 import { grid_size } from "./constants";
 import { newBool2D, overlay2DBools, padbool2dBR, rotate } from "./utility";
 export class Levels {
-    levels: Level[] = []
-    currentlevel: number = 0
+    levels: Level[] = [];
+    currentlevel: number = 0;
     levelsnum: number = 0;
     levelsDiv: HTMLDivElement;
     constructor() {
@@ -17,11 +17,17 @@ export class Levels {
     }
     addLevel(level: Level): void {
         this.levels.push(level);
-        this.levelsnum++
+        this.levelsnum++;
         let levelElement = document.createElement("div");
         levelElement.innerText = this.levelsnum.toString();
-        levelElement.classList.add("monospace")
-        levelElement.classList.add("menubutton")
+        levelElement.classList.add("monospace");
+        levelElement.classList.add("menubutton");
+        levelElement.addEventListener("click",()=>{
+            // this method of getting the level number can easily be taken advantage of
+            // for example, if you clear lvl 1, you can immediatly load any level, by editing this value. 
+            // we could prevent this by only allowing you to load levels that have been cleared, or the next level.
+            let lvlN=Number.parseInt(levelElement.innerText);
+        })
 
         this.levelsDiv.appendChild(levelElement);
     }
@@ -37,11 +43,12 @@ export class Levels {
             player.end = { x: level.end.x, y: level.end.y }
             if (level.gridOffset) {
                 let newEmpty: bool2d = newBool2D(grid.length, grid[0].length)
-                grid = level.grid
+                grid=padbool2dBR(overlay2DBools(newEmpty,level.grid,level.gridOffset.x,level.gridOffset.y),grid.length,grid[0].length);
+
 
             } else {
 
-                // grid = padbool2dBR(level.grid, grid[0].length, grid.length);
+                grid = padbool2dBR(level.grid, grid[0].length, grid.length);
             }
         }
         return grid

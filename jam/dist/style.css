@@ -8,6 +8,9 @@
 .noselect{
     user-select: none;
 }
+.bold {
+    font-weight: 800;
+}
 .menubutton {
     background: black;
     border: 3px solid white;
