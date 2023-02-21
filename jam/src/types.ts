@@ -1,5 +1,5 @@
 
-export type bool2d = (boolean)[][];
+export type bool2d = boolean[][];
 export type vec2 = {
     x: number
     y: number
@@ -10,4 +10,5 @@ export type Level = {
     start: vec2
     end: vec2
     gridOffset?: vec2
+    enabled?:boolean
 }

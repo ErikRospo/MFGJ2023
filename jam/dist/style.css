@@ -9,7 +9,7 @@
     user-select: none;
 }
 .menubutton {
-    background-color: black;
+    background: black;
     border: 3px solid white;
     display: inline-block;
     cursor: pointer;
@@ -24,6 +24,7 @@
     flex-wrap: wrap;
     align-content: center;
     justify-content: center;
+    transition: ease-out color 0.5s, ease-out 0.5s background-color;
 }
 
 .menubutton:active {
@@ -31,7 +32,8 @@
     top: 2px;
 }
 
-.menubutton:hover {
+
+.menubutton:hover,.menubutton:focus {
     background-color: white;
     color: black;
 
@@ -80,6 +82,9 @@
     display: flex;
     justify-self: center;
     user-select: none;
+    opacity: 0;
+    scale: 0;
+    transition: ease-in opacity 1s, scale cubic-bezier(0.175, 0.885, 0.32, 1.275) 1s;
 }
 
 #backButton {
@@ -154,4 +159,33 @@
     flex-wrap: wrap;
     align-content: center;
     align-items: center;
+}
+.levelSelectItem{
+    display:flex;
+    background-color: black;
+    border:white 2px solid;
+    width:15px;
+    height:15px;
+    text-align: center;
+    color:white;
+    text-anchor: middle;
+    justify-self: center;
+    align-self: center;
+    align-items: center;
+    
+    justify-content: center;
+    padding:15px;
+    font-size: 20px;
+}
+#levelSelectDiv{
+    display: grid;
+    background-color: transparent;
+    grid-template-columns: auto auto auto auto;
+    padding: 10px;
+    align-self: center;
+    position: absolute;
+    left:34.9%;
+    top:25%;
+    width:25%;
+    height:50%; 
 }

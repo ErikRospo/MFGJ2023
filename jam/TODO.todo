@@ -17,6 +17,10 @@
 [ ] css animations for menus
     [ ] slide in from top menu
     [ ] fade in/out title
-[x] mobile detection
-    [ ] error screen
+[ ] feature detection
+    [x] mobile detection
+        [ ] error screen
+    [x] local storage detection
+        [ ] error screen
+    [ ] find other features used.
 [ ] fix error where clicking back button loads random grid

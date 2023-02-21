@@ -6,7 +6,7 @@ import { bool2d } from './types';
 import levelList from './levels';
 import { grid_size, fps, EndColor, DEBUG } from './constants';
 import SaveFile from "./savefile";
-import { isMobile } from "pixi.js";
+import { isCompatable } from "./compat";
 const canvas = document.createElement('canvas');
 const ctx = canvas.getContext("2d");
 canvas.id = "canvasElm"
@@ -14,6 +14,7 @@ document.body.appendChild(canvas);
 const playButton = document.getElementById("playButton");
 const menuDiv = document.getElementById("menuDiv")
 const optionsMenu = document.getElementById("optionsMenu");
+const levelSelectDiv = document.getElementById("levelSelectDiv");
 const optionsButton = document.getElementById("optionsButton");
 const optionsBackButton = document.getElementById("backButton");
 const optionsBackButton2 = document.getElementById("backButton2");
@@ -23,8 +24,9 @@ const SFXVolumeLabel = document.getElementById("SFXVolLabel") as HTMLLabelElemen
 const SFXVolumeSlider = document.getElementById("SFXVol") as HTMLInputElement
 let savefile = new SaveFile()
 savefile.load(levelList.levelsnum);
+let compat = isCompatable()
+const MOBILE = !compat.device
 
-const MOBILE = isMobile.any;
 console.log(levelList)
 let frame = 0;
 let grid: bool2d = [];
@@ -220,6 +222,8 @@ function init() {
         MusicVolumeLabel.innerText = `Music Volume: ${MusicVolumeSlider.value}%`
         localStorage.setItem("musicVolume", MusicVolumeSlider.value)
     })
+    levelSelectDiv.style.display = "none"
+
     optionsBackButton2.addEventListener("click", () => {
         if (playing) {
             if (!optionsEnabled) {
@@ -243,22 +247,26 @@ function init() {
             }
         }
     })
-}
-playButton.addEventListener("click", () => {
-    if (MOBILE) {
-        mobileAlert()
-    }
-    else {
+    playButton.addEventListener("click", () => {
+        if (MOBILE) {
+            mobileAlert()
+        }
+        else {
 
-        canvas.classList.remove("blur")
-        playerEnabled = true;
-        reset_grid()
-        grid = levelList.loadNext(player, grid)
-        // Place.block(grid,Math.floor(player.x/grid_size),Math.floor(player.y/grid_size)+13)        
-        menuDiv.style.display = "none"
-        playing = true;
-    }
-})
+            canvas.classList.remove("blur")
+            playerEnabled = true;
+            reset_grid()
+            grid = levelList.loadNext(player, grid)
+            // Place.block(grid,Math.floor(player.x/grid_size),Math.floor(player.y/grid_size)+13)        
+            menuDiv.style.display = "none"
+            playing = true;
+            levelSelectDiv.style.display = "grid"
+        }
+    })
+    let _tmp=document.getElementById("titleText")
+    _tmp.style.opacity="1"
+    _tmp.style.scale="1"
+}
 
 setInterval(() => {
     if (enabled) step()

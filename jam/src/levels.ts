@@ -9,9 +9,21 @@ export class Levels {
     levels: Level[] = []
     currentlevel: number = 0
     levelsnum: number = 0;
+    levelsDiv: HTMLDivElement;
+    constructor() {
+        this.levelsDiv = document.getElementById("levelSelectDiv") as HTMLDivElement;
+
+
+    }
     addLevel(level: Level): void {
         this.levels.push(level);
         this.levelsnum++
+        let levelElement = document.createElement("div");
+        levelElement.innerText = this.levelsnum.toString();
+        levelElement.classList.add("monospace")
+        levelElement.classList.add("menubutton")
+
+        this.levelsDiv.appendChild(levelElement);
     }
     loadLevel(player: Player, grid: bool2d, id: number): bool2d {
         let level = this.levels[id]
@@ -24,11 +36,11 @@ export class Levels {
             player.y = level.start.y * grid_size
             player.end = { x: level.end.x, y: level.end.y }
             if (level.gridOffset) {
-                let newEmpty: bool2d = newBool2D(grid.length,grid[0].length)
+                let newEmpty: bool2d = newBool2D(grid.length, grid[0].length)
                 grid = level.grid
 
             } else {
-            
+
                 // grid = padbool2dBR(level.grid, grid[0].length, grid.length);
             }
         }
@@ -41,6 +53,7 @@ export class Levels {
     reload(player: Player, grid: bool2d) {
         return this.loadLevel(player, grid, this.currentlevel)
     }
+
 }
 
 let levelList = new Levels()

@@ -3,3 +3,4 @@ dist/assets
 dist/bundle.js
 build.zip
 
+**/*.tmp
