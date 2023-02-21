@@ -7,6 +7,7 @@ import { grid_size } from "./constants";
 import { newBool2D, overlay2DBools, padbool2dBR, rotate } from "./utility";
 export class Levels {
     levels: Level[] = [];
+    toLoad: number = -1;
     currentlevel: number = 0;
     levelsnum: number = 0;
     levelsDiv: HTMLDivElement;
@@ -15,21 +16,36 @@ export class Levels {
 
 
     }
-    addLevel(level: Level): void {
+    addLevel(level: Level) {
         this.levels.push(level);
         this.levelsnum++;
         let levelElement = document.createElement("div");
         levelElement.innerText = this.levelsnum.toString();
         levelElement.classList.add("monospace");
         levelElement.classList.add("menubutton");
-        levelElement.addEventListener("click",()=>{
+        levelElement.addEventListener("click", () => {
             // this method of getting the level number can easily be taken advantage of
-            // for example, if you clear lvl 1, you can immediatly load any level, by editing this value. 
+            // for example, if you clear lvl 1, you can imdtly load any level, by editing the html. 
             // we could prevent this by only allowing you to load levels that have been cleared, or the next level.
-            let lvlN=Number.parseInt(levelElement.innerText);
+            // however, this isn't a huge issue, as this just a simple, single player game.
+            let lvlN = Number.parseInt(levelElement.innerText);
+            this.toLoad = lvlN;
+
         })
 
         this.levelsDiv.appendChild(levelElement);
+        return levelElement
+    }
+    tryLoad(player: Player, grid: bool2d) {
+        if (this.toLoad !== -1) {
+            let rv = this.loadLevel(player, grid, this.toLoad)
+            this.toLoad = -1;
+
+            return rv;
+        }
+
+        return false
+
     }
     loadLevel(player: Player, grid: bool2d, id: number): bool2d {
         let level = this.levels[id]
@@ -43,7 +59,7 @@ export class Levels {
             player.end = { x: level.end.x, y: level.end.y }
             if (level.gridOffset) {
                 let newEmpty: bool2d = newBool2D(grid.length, grid[0].length)
-                grid=padbool2dBR(overlay2DBools(newEmpty,level.grid,level.gridOffset.x,level.gridOffset.y),grid.length,grid[0].length);
+                grid = padbool2dBR(overlay2DBools(newEmpty, level.grid, level.gridOffset.x, level.gridOffset.y), grid.length, grid[0].length);
 
 
             } else {
@@ -67,4 +83,5 @@ let levelList = new Levels()
 levelList.addLevel({ grid: (level1), start: { x: 20, y: 0 }, end: { x: 20, y: 15 }, gridOffset: { x: 5, y: 10 } })
 levelList.addLevel({ grid: rotate(level2), start: { x: 20, y: 0 }, end: { x: 22, y: 15 } })
 levelList.addLevel({ grid: rotate(level3), start: { x: 20, y: 0 }, end: { x: 22, y: 15 } })
+
 export default levelList

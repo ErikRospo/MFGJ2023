@@ -206,7 +206,7 @@ function init() {
     optionsBackButton.addEventListener("click", () => {
         optionsMenu.style.display = "none"
         menuDiv.style.display = "flex";
-        levelSelectDiv.style.display="none";
+        levelSelectDiv.style.display = "none";
 
     })
     SFXVolumeSlider.valueAsNumber = Sounds.SFXvolume * 100
@@ -254,14 +254,14 @@ function init() {
             mobileAlert()
         }
         else {
-            if (savefile.levelsCompleted.length>0){
-            
-                levelSelectDiv.style.display = "grid";
-                menuDiv.style.display="none";
-                optionsMenu.style.display="none";
-                optionsBackButton.style.display="flex";
+            if (savefile.levelsCompleted.length > 0) {
 
-            }else{
+                levelSelectDiv.style.display = "grid";
+                menuDiv.style.display = "none";
+                optionsMenu.style.display = "none";
+                optionsBackButton.style.display = "flex";
+
+            } else {
                 canvas.classList.remove("blur");
                 playerEnabled = true;
                 reset_grid();
@@ -272,15 +272,31 @@ function init() {
             }
         }
     })
-    let _tmp=document.getElementById("titleText")
-    _tmp.style.opacity="1"
-    _tmp.style.scale="1"
+    let _tmp = document.getElementById("titleText")
+    _tmp.style.opacity = "1"
+    _tmp.style.scale = "1"
 }
+function tickUpdate() {
+    let llrv = levelList.tryLoad(player, grid)
+    if (llrv !== false) {
+        reset_grid();
 
+        grid = llrv;
+        canvas.classList.remove("blur");
+        playerEnabled = true;
+        menuDiv.style.display = "none";
+        playing = true;
+        optionsMenu.style.display = "none";
+        levelSelectDiv.style.display = "none";
+    }
+
+}
 setInterval(() => {
-    if (enabled) step()
-}, 1000 / fps)
+    if (enabled) step();
 
+
+}, 1000 / fps)
+setInterval(tickUpdate, 20)
 addEventListener("keydown", (ev) => {
     switch (ev.key.toLowerCase()) {
 

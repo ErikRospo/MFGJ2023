@@ -12,8 +12,9 @@
 [ ] level select
     [ ] typescript manager
     [ ] localStorage save/load
-    [ ] html select screen
-    [ ] don't immediately transition from play button to actually playing the game.
+    [x] html select screen
+    [x] don't immediately transition from play button to actually playing the game.
+    [ ] decrease vertical spacing with more than 4 items.
 [ ] save/load levels
 [ ] rotate RLEs exported by copy.sh
 [ ] css animations for menus
