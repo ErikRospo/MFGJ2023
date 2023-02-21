@@ -5,12 +5,18 @@
 [x] pause menu
 [x] main menu
 [x] audio
-[x] music
+[-] music
+    [ ] main menu track
+    [-] in game track
+        [-] at least 3x different tracks
+            [x] a
+            [ ] b
+            [ ] c
 [x] sfx
 
-[ ] levels
-[ ] level select
-    [ ] typescript manager
+[-] levels
+[-] level select
+    [-] typescript manager
     [ ] localStorage save/load
     [x] html select screen
     [x] don't immediately transition from play button to actually playing the game.
@@ -20,7 +26,15 @@
 [ ] css animations for menus
     [ ] slide in from top menu
     [ ] fade in/out title
-[ ] feature detection
+[ ] add a level end screen
+    [ ] completion time
+    [ ] next button
+    [ ] replay button
+    [ ] menu button
+[-] pause menu
+    [ ] main menu button
+    [ ] options menu button (not just the only thing on the screen)
+[-] feature detection
     [x] mobile detection
         [ ] error screen
     [x] local storage detection
