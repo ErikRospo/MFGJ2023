@@ -1,5 +1,5 @@
 /// <reference path="../types.d.ts"/>
-import { Sounds as SoundsClass } from "./audioplayer"
+import  Sounds  from "./audioplayer"
 import { Place } from './patterns';
 import { Player } from './player';
 import { bool2d } from './types';
@@ -30,7 +30,7 @@ const MOBILE = !compat.device
 console.log(levelList)
 let frame = 0;
 let grid: bool2d = [];
-let Sounds = new SoundsClass();
+let SoundsInstance = Sounds;
 let hasClicked = false;
 let optionsEnabled = false;
 let playing = false;
@@ -180,7 +180,7 @@ function init() {
     addEventListener("click", () => {
         if (!hasClicked) {
             hasClicked = true
-            Sounds.playMusic()
+            SoundsInstance.playMusic()
 
         }
     })
@@ -209,17 +209,17 @@ function init() {
         levelSelectDiv.style.display = "none";
 
     })
-    SFXVolumeSlider.valueAsNumber = Sounds.SFXvolume * 100
-    MusicVolumeSlider.valueAsNumber = Sounds.MusicVolume * 100
+    SFXVolumeSlider.valueAsNumber = SoundsInstance.SFXvolume * 100
+    MusicVolumeSlider.valueAsNumber = SoundsInstance.MusicVolume * 100
 
     SFXVolumeSlider.addEventListener("input", (_) => {
-        Sounds.SFXvolume = SFXVolumeSlider.valueAsNumber / 100
+        SoundsInstance.SFXvolume = SFXVolumeSlider.valueAsNumber / 100
         SFXVolumeLabel.innerText = `SFX Volume: ${SFXVolumeSlider.value}%`
         localStorage.setItem("sfxVolume", SFXVolumeSlider.value)
 
     })
     MusicVolumeSlider.addEventListener("input", (_) => {
-        Sounds.MusicVolume = MusicVolumeSlider.valueAsNumber / 100
+        SoundsInstance.MusicVolume = MusicVolumeSlider.valueAsNumber / 100
         MusicVolumeLabel.innerText = `Music Volume: ${MusicVolumeSlider.value}%`
         localStorage.setItem("musicVolume", MusicVolumeSlider.value)
     })
@@ -304,7 +304,7 @@ addEventListener("keydown", (ev) => {
         case " ":
             if (player.grounded && playerEnabled) {
                 player.vy = -20;
-                Sounds.jump()
+                SoundsInstance.jump()
             }
             break;
         case "a":
@@ -366,10 +366,10 @@ function mobileAlert() {
 }
 
 function loadLocalStorage() {
-    Sounds.SFXvolume = (Number(localStorage.getItem("sfxVolume")) || 50) / 100;
-    Sounds.MusicVolume = (Number(localStorage.getItem("musicVolume")) || 50) / 100;
-    MusicVolumeSlider.value = (Sounds.MusicVolume * 100).toFixed(0);
-    SFXVolumeSlider.value = (Sounds.SFXvolume * 100).toFixed(0);
+    SoundsInstance.SFXvolume = (Number(localStorage.getItem("sfxVolume")) || 50) / 100;
+    SoundsInstance.MusicVolume = (Number(localStorage.getItem("musicVolume")) || 50) / 100;
+    MusicVolumeSlider.value = (SoundsInstance.MusicVolume * 100).toFixed(0);
+    SFXVolumeSlider.value = (SoundsInstance.SFXvolume * 100).toFixed(0);
     SFXVolumeLabel.innerText = `SFX Volume: ${SFXVolumeSlider.value}%`;
     MusicVolumeLabel.innerText = `Music Volume: ${MusicVolumeSlider.value}%`;
 }
@@ -382,7 +382,7 @@ function check_for_death() {
         player.ay = 0;
         player.vx = 0;
         player.vy = 0;
-        Sounds.die()
+        SoundsInstance.die()
         return true
     }
     else {

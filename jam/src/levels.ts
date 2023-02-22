@@ -5,6 +5,7 @@ import level2 from "./levels/glider_intercept1.rle"
 import level3 from "./levels/glider_intercept2.rle"
 import { grid_size } from "./constants";
 import { newBool2D, overlay2DBools, padbool2dBR, rotate } from "./utility";
+import Sounds from "./audioplayer";
 export class Levels {
     levels: Level[] = [];
     toLoad: number = -1;
@@ -23,7 +24,10 @@ export class Levels {
         levelElement.innerText = this.levelsnum.toString();
         levelElement.classList.add("monospace");
         levelElement.classList.add("menubutton");
+        levelElement.classList.add("noselect");
         levelElement.addEventListener("click", () => {
+            Sounds.select()
+
             // this method of getting the level number can easily be taken advantage of
             // for example, if you clear lvl 1, you can imdtly load any level, by editing the html. 
             // we could prevent this by only allowing you to load levels that have been cleared, or the next level.
@@ -81,7 +85,7 @@ export class Levels {
 
 let levelList = new Levels()
 levelList.addLevel({ grid: (level1), start: { x: 20, y: 0 }, end: { x: 20, y: 15 }, gridOffset: { x: 5, y: 10 } })
-levelList.addLevel({ grid: rotate(level2), start: { x: 20, y: 0 }, end: { x: 22, y: 15 } })
-levelList.addLevel({ grid: rotate(level3), start: { x: 20, y: 0 }, end: { x: 22, y: 15 } })
+levelList.addLevel({ grid: rotate(level2), start: { x: 20, y: 0 }, end: { x: 22, y: 15 }, gridOffset: { x: 5, y: 10 } })
+levelList.addLevel({ grid: rotate(level3), start: { x: 20, y: 0 }, end: { x: 22, y: 15 }, gridOffset: { x: 5, y: 10 } })
 
 export default levelList
