@@ -1,5 +1,5 @@
 /// <reference path="../types.d.ts"/>
-import  Sounds  from "./audioplayer"
+import Sounds from "./audioplayer"
 import { Place } from './patterns';
 import { Player } from './player';
 import { bool2d } from './types';
@@ -350,8 +350,16 @@ addEventListener("keydown", (ev) => {
                     enabled = true;
                     playerEnabled = true;
                     optionsMenu.style.display = "none";
-                    canvas.classList.remove("blur")
-                    optionsBackButton2.style.display = "none"
+                    canvas.classList.remove("blur");
+                    optionsBackButton2.style.display = "none";
+                    optionsBackButton.style.display="none";
+                }
+            }else{
+                if (optionsEnabled){
+                    optionsEnabled=false
+                    optionsMenu.style.display="flex";
+                    optionsBackButton.style.display="none";
+                    optionsBackButton2.style.display="none";
                 }
             }
             break

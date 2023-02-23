@@ -18,6 +18,7 @@ export class Levels {
 
     }
     addLevel(level: Level) {
+        
         this.levels.push(level);
         this.levelsnum++;
         let levelElement = document.createElement("div");

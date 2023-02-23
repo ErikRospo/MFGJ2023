@@ -21,11 +21,23 @@
     [x] html select screen
     [x] don't immediately transition from play button to actually playing the game.
     [ ] decrease vertical spacing with more than 4 items.
+    [ ] back button to menu
+[ ] save/load progress
+    data:
+        [ ] level times
+        [ ] levels completed
+        [ ] checking if the game has been completed
+    format:
+        first 4 characters: id "CRNS" Cell RuNner Save
+        8 characters: git commit sha (version number)
+        then:
+        save file -> to json -> deflate -> b64
 [ ] save/load levels
+
 [ ] rotate RLEs exported by copy.sh
-[ ] css animations for menus
+[-] css animations for menus
     [ ] slide in from top menu
-    [ ] fade in/out title
+    [x] fade in/out title
 [ ] add a level end screen
     [ ] completion time
     [ ] next button
@@ -39,5 +51,17 @@
         [ ] error screen
     [x] local storage detection
         [ ] error screen
-    [ ] find other features used.
+    [-] find other features used, and add tests
 [ ] fix error where clicking back button loads random grid
+[ ] tests
+    [ ] set up framework
+    [ ] written
+    [ ] intergrated into build system
+        [ ] don't push to itch if failed
+[ ] get better names for DOM elements
+[ ] convienience functions for menus
+    [ ] show/hide. These should work from anywhere to anywhere.
+        [ ] options menu
+        [ ] pause menu
+        [ ] main menu
+        [ ] level select menu

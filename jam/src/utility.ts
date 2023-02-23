@@ -110,6 +110,37 @@ export function overlay2DBools(
     }
     return result;
 }
-export function newBool2D(width:number,height:number,value:boolean=false):bool2d{
+export function newBool2D(width: number, height: number, value: boolean = false): bool2d {
     return Array(width).map(() => Array(height).fill(value))
+}
+export function cyrb53String(str: string, seed = 0) {
+    let h1 = 0xdeadbeef ^ seed,
+        h2 = 0x41c6ce57 ^ seed;
+    for (let i = 0, ch; i < str.length; i++) {
+        ch = str.charCodeAt(i);
+        h1 = Math.imul(h1 ^ ch, 2654435761);
+        h2 = Math.imul(h2 ^ ch, 1597334677);
+    }
+
+    h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+    h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+
+    return 4294967296n * BigInt(h2) + BigInt(h1);
+};
+
+export function cyrb53Bool2d(v:bool2d, seed = 0) {
+    let s=bool2dToString(v);
+    return cyrb53String(s,seed);
+};
+export function bool2dToString(v: bool2d):string {
+    let s = "";
+    for (let x = 0; x < v.length; x++) {
+        const vx = v[x];
+        for (let y = 0; y < vx.length; y++) {
+            const vxy = vx[y];
+            s += vxy ? "1" : "0";
+        }
+        s += "\n";
+    }
+    return s
 }
