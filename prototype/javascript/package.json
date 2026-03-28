@@ -19,7 +19,7 @@
     "webpack-dev-server": "^4.11.1"
   },
   "dependencies": {
-    "lodash": "^4.17.21",
+    "lodash": "^4.17.23",
     "pixi.js": "^7.1.1"
   }
 }
